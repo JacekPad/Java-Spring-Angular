@@ -1,0 +1,6 @@
+{
+    "/storage": {
+        "target":"http://localhost:8080/storage",
+        "secure": false
+    }
+}

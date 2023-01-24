@@ -6,8 +6,6 @@ import my.project.storage.model.entity.Product;
 import my.project.storage.repository.StorageRepository;
 import org.springframework.stereotype.Service;
 
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Optional;
 
