@@ -4,7 +4,6 @@ import { Product } from '../model/product-model';
 import { StorageService } from '../storage.service';
 import {MatSort, Sort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
-import { TestModel } from '../model/test-table-model';
 
 @Component({
   selector: 'app-storage-list',
