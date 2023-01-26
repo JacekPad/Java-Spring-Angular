@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { StorageListComponent } from './storage-list/storage-list.component';
 import { StorageDetailsComponent } from './storage-details/storage-details.component';
 import {MatTableModule} from '@angular/material/table';
-
+import {MatPaginatorModule} from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -12,7 +13,9 @@ import {MatTableModule} from '@angular/material/table';
   ],
   imports: [
     CommonModule,
-    MatTableModule
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule
   ]
 })
 export class StorageModule { }
