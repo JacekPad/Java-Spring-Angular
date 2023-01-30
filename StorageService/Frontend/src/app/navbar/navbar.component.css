@@ -1,0 +1,15 @@
+.main {
+    display: flex;
+    padding-left: 2em;
+    padding-right: 2em;
+}
+
+.navbar {
+    margin: 1em;
+    width: 20%;
+}
+
+.main-content {
+    width: 100%;
+    margin: 1em;
+}
