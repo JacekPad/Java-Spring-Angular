@@ -8,14 +8,10 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { StorageModule } from './storage/storage.module';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
-import { TopbarComponent } from './topbar/topbar.component';
 import { FooterComponent } from './footer/footer.component';
-import {MatButtonModule} from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
-import {MatCardModule} from '@angular/material/card';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatSidenavModule} from '@angular/material/sidenav';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { TopbarComponent } from './topbar/topbar.component';
+import { MaterialModule } from './material.module';
 
 
 @NgModule({
@@ -33,11 +29,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     StorageModule,
     AppRoutingModule,
     HttpClientModule,
-    MatButtonModule,
-    MatIconModule,
-    MatCardModule,
-    MatToolbarModule,
-    MatSidenavModule
+    MaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]

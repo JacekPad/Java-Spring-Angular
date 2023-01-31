@@ -1,4 +1,8 @@
 <mat-drawer-container class="navbar">
     <mat-drawer class="side" mode="side" opened><app-sidebar></app-sidebar></mat-drawer>
-    <mat-drawer-content><router-outlet></router-outlet></mat-drawer-content>
+    <mat-drawer-content>
+        <div class="main-content">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-drawer-content>
 </mat-drawer-container>

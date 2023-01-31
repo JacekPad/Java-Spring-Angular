@@ -7,3 +7,16 @@
 .mat-mdc-row:hover .mat-mdc-cell {
     border-color: currentColor;
   }
+
+
+  .filters{
+    display: flex;
+    justify-content: space-evenly;
+    padding: 1.5em
+}
+
+.filter-input {
+    padding-left: 20px;
+    padding-right: 20px;
+    width: 300px;
+}
