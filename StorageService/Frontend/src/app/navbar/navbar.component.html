@@ -1,8 +1,4 @@
-<div class="main">
-    <div class="navbar">
-    <p> heres gonna be navbar</p>
-    </div>
-    <div class="main-content">
-        <router-outlet></router-outlet>
-    </div>
-</div>
+<mat-drawer-container class="navbar">
+    <mat-drawer class="side" mode="side" opened><app-sidebar></app-sidebar></mat-drawer>
+    <mat-drawer-content><router-outlet></router-outlet></mat-drawer-content>
+</mat-drawer-container>

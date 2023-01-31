@@ -1,5 +1,3 @@
-.topbar {
-    padding-left: 2em;
-    padding-right: 2em;
-    margin: 1em;
-}
+.example-spacer {
+    flex: 1 1 auto;
+  }
