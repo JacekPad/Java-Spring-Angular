@@ -3,6 +3,10 @@ export interface IProduct {
     name: string
     type: string
     quantity: number
+    created: Date;
+    modified: Date;
+    status: String;
+    supplier: String
 }
 
 export class Product {
@@ -10,6 +14,10 @@ export class Product {
     public name: string;
     public type: string;
     public quantity: number
+    public created: Date;
+    public modified: Date;
+    public status: String;
+    public supplier: String;
 
     constructor();
     constructor(obj: IProduct);
@@ -18,5 +26,9 @@ export class Product {
         this.name = obj && obj.name
         this.type = obj && obj.type
         this.quantity = obj && obj.quantity
+        this.created = obj && obj.created
+        this.modified = obj && obj.modified
+        this.status = obj && obj.status
+        this.supplier = obj && obj.supplier
     }
 }
