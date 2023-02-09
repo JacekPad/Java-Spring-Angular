@@ -2,8 +2,11 @@ package my.project.storage.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import my.project.storage.model.data.FilterParams;
 import my.project.storage.model.entity.Product;
 import my.project.storage.repository.StorageRepository;
+import my.project.storage.repository.StorageRepositoryExt;
+import my.project.storage.repository.StorageRepositoryExtImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,12 +17,19 @@ public class StorageService {
 
     private StorageRepository storageRepository;
 
-    StorageService (StorageRepository storageRepository) {
+    private StorageRepositoryExt storageRepositoryExt;
+
+    StorageService (StorageRepository storageRepository, StorageRepositoryExt storageRepositoryExt) {
         this.storageRepository = storageRepository;
+        this.storageRepositoryExt = storageRepositoryExt;
     }
 
     public List<Product> getProducts() {
         return storageRepository.findAllByOrderByIdAsc();
+    }
+
+    public void getProductsFiltered(FilterParams params) {
+        storageRepositoryExt.findByFilters(params);
     }
 
     public void addProduct(Product product) {

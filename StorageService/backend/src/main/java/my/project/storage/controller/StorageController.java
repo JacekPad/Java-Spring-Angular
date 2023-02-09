@@ -2,6 +2,8 @@ package my.project.storage.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import my.project.storage.model.data.FilterParams;
+import my.project.storage.model.data.ProductListData;
 import my.project.storage.model.entity.Product;
 import my.project.storage.service.StorageService;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +14,7 @@ import java.util.List;
 @RequestMapping("/storage")
 public class StorageController {
 
-    private StorageService storageService;
+    private final StorageService storageService;
 
     StorageController(StorageService storageService) {
         this.storageService = storageService;
@@ -22,6 +24,12 @@ public class StorageController {
     public List<Product> getProducts() {
         //        TODO securityCheck etc
         return storageService.getProducts();
+    }
+
+    @PostMapping("")
+    public void getProductsTest(@RequestBody FilterParams params) {
+        System.out.println("posting filters");
+        storageService.getProductsFiltered(params);
     }
 
     @GetMapping("/{id}")

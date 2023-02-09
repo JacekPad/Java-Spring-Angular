@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Product } from './model/product-model';
 import { Observable } from 'rxjs';
+import { FilterParams } from './model/filterParams-model';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,12 @@ export class StorageService {
 
   createProduct(product: Product): void {
     this.http.post<Product>(this.baseUrl + "add", product);
+  }
+
+  getProductsFiltered(params: FilterParams): void {
+    console.log("posting");
+    console.log(this.baseUrl);
+    this.http.post<void>(this.baseUrl, params).subscribe();
   }
 
 }

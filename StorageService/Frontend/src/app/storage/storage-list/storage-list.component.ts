@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { ISearchFilter } from '../model/search-filters-model';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { IFilterParams } from '../model/filterParams-model';
 
 @Component({
   selector: 'app-storage-list',
@@ -23,7 +24,7 @@ export class StorageListComponent implements OnInit, AfterViewInit {
   displayedColumns = ['name', 'type', 'quantity', 'status', 'supplier', 'created', 'modified'];
   searchFilterForm!: FormGroup;
 
-  searchValues: ISearchFilter = {
+  searchValues: IFilterParams = {
     name: '',
     type: '',
     supplier: '',
@@ -61,6 +62,7 @@ export class StorageListComponent implements OnInit, AfterViewInit {
 
   searchButton() {
     console.log(this.searchValues);
+    this.storageService.getProductsFiltered(this.searchValues);
   }
 
   updateSearchValues() {
