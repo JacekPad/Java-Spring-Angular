@@ -29,7 +29,8 @@ public class StorageController {
     @PostMapping("")
     public void getProductsTest(@RequestBody FilterParams params) {
         System.out.println("posting filters");
-        storageService.getProductsFiltered(params);
+        List<ProductListData> productsFiltered = storageService.getProductsFiltered(params);
+        System.out.println(productsFiltered);
     }
 
     @GetMapping("/{id}")

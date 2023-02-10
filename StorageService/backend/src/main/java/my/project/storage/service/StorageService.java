@@ -3,6 +3,7 @@ package my.project.storage.service;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import my.project.storage.model.data.FilterParams;
+import my.project.storage.model.data.ProductListData;
 import my.project.storage.model.entity.Product;
 import my.project.storage.repository.StorageRepository;
 import my.project.storage.repository.StorageRepositoryExt;
@@ -28,8 +29,8 @@ public class StorageService {
         return storageRepository.findAllByOrderByIdAsc();
     }
 
-    public void getProductsFiltered(FilterParams params) {
-        storageRepositoryExt.findByFilters(params);
+    public List<ProductListData> getProductsFiltered(FilterParams params) {
+        return storageRepositoryExt.findByFilters(params);
     }
 
     public void addProduct(Product product) {

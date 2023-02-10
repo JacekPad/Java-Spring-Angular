@@ -7,10 +7,10 @@ import java.time.LocalDateTime;
 @Data
 public class ProductListData {
 
-    private Long id;
+    private String id;
     private String name;
     private String type;
-    private Long quantity;
+    private String quantity;
     private String status;
     private String supplier;
     private LocalDateTime created;
