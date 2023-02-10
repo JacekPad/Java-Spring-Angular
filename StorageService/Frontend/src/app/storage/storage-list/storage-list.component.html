@@ -16,7 +16,7 @@
 
             <!-- TODO different date type? -->
             <mat-form-field class="filter-input" appearance="fill">
-                <mat-label>Created</mat-label>
+                <mat-label>Created before</mat-label>
                 <input formControlName="created" matInput [matDatepicker]="createdDate" placeholder="Choose a date">
                 <mat-datepicker-toggle matIconSuffix [for]="createdDate"></mat-datepicker-toggle>
                 <mat-datepicker #createdDate></mat-datepicker>
@@ -36,12 +36,12 @@
 
             <mat-form-field class="filter-input" appearance="fill">
                 <mat-label>Quantity min</mat-label>
-                <input formControlName="quantityMin" type="number" min="0" [defaultValue]="0" matInput>
+                <input formControlName="quantityMin" type="number" min="-1" [defaultValue]="0" matInput>
             </mat-form-field>
 
             <mat-form-field class="filter-input" appearance="fill">
                 <mat-label>Quantity max</mat-label>
-                <input formControlName="quantityMax" type="number" min="0" matInput>
+                <input formControlName="quantityMax" type="number" min="-1" [defaultValue]="-1" matInput>
             </mat-form-field>
 
         </div>

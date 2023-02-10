@@ -24,11 +24,6 @@ public class StorageService {
         this.storageRepository = storageRepository;
         this.storageRepositoryExt = storageRepositoryExt;
     }
-
-    public List<Product> getProducts() {
-        return storageRepository.findAllByOrderByIdAsc();
-    }
-
     public List<ProductListData> getProductsFiltered(FilterParams params) {
         return storageRepositoryExt.findByFilters(params);
     }

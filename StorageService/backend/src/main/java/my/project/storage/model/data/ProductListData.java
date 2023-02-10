@@ -2,7 +2,7 @@ package my.project.storage.model.data;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 public class ProductListData {
@@ -13,8 +13,8 @@ public class ProductListData {
     private String quantity;
     private String status;
     private String supplier;
-    private LocalDateTime created;
-    private LocalDateTime modified;
+    private LocalDate created;
+    private LocalDate modified;
 
 
 }

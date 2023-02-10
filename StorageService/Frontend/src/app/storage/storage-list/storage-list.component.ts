@@ -30,14 +30,14 @@ export class StorageListComponent implements OnInit, AfterViewInit {
     supplier: '',
     status: '',
     quantityMin: 0,
-    quantityMax: 0,
+    quantityMax: -1,
     created: this.getInitDate()
   }
 
   constructor(private storageService: StorageService, private fb: FormBuilder) { }
 
   ngOnInit(): void {
-    this.storageService.getProducts().subscribe(resp => {
+    this.storageService.getProductsFiltered(this.searchValues).subscribe(resp => {
       this.dataToDisplay.data = resp
     })
     this.searchFilterForm = this.getFilterForm();
@@ -51,9 +51,7 @@ export class StorageListComponent implements OnInit, AfterViewInit {
   }
 
   getInitDate(): Date {
-    const date = new Date();
-    date.setDate(date.getDate() - 31);
-    return date;
+    return new Date();
   }
 
   getProductDetails(productId: number) {
@@ -61,8 +59,9 @@ export class StorageListComponent implements OnInit, AfterViewInit {
   }
 
   searchButton() {
-    console.log(this.searchValues);
-    this.storageService.getProductsFiltered(this.searchValues);
+    this.storageService.getProductsFiltered(this.searchValues).subscribe(resp => {
+      this.dataToDisplay.data = resp
+    });
   }
 
   updateSearchValues() {

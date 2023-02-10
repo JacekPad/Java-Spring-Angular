@@ -19,22 +19,19 @@ import java.util.Objects;
 
 @Repository
 @Slf4j
-public class StorageRepositoryExtImpl implements StorageRepositoryExt{
+public class StorageRepositoryExtImpl implements StorageRepositoryExt {
 
     @PersistenceContext
     private EntityManager em;
 
     @Override
     public List<ProductListData> findByFilters(FilterParams params) {
-//        TODO fix exception when no results
-//         fix created date too detailed (only date month year)
-//         maybe change to CREATED BEFORE (<=) :date
         StringBuilder querySelect = new StringBuilder("SELECT * FROM PRODUCTS p");
         StringBuilder whereParamsQuery = new StringBuilder();
 
-        if (params!= null) {
+        if (params != null) {
             if (params.getName() != null && !params.getName().isBlank()) {
-                whereParamsQuery.append(" UPPER(p.NAME) LIKE UPPER(:name)" );
+                whereParamsQuery.append(" UPPER(p.NAME) LIKE UPPER(:name)");
             }
             if (params.getType() != null && !params.getType().isBlank()) {
                 if (!whereParamsQuery.isEmpty()) {
@@ -46,7 +43,7 @@ public class StorageRepositoryExtImpl implements StorageRepositoryExt{
                 if (!whereParamsQuery.isEmpty()) {
                     whereParamsQuery.append(" AND");
                 }
-                whereParamsQuery.append(" UPPER(p.CREATED) LIKE UPPER(:created)");
+                whereParamsQuery.append(" UPPER(p.CREATED) <= UPPER(:created)");
             }
             if (params.getSupplier() != null && !params.getSupplier().isBlank()) {
                 if (!whereParamsQuery.isEmpty()) {
@@ -75,59 +72,58 @@ public class StorageRepositoryExtImpl implements StorageRepositoryExt{
         }
         StringBuilder queryString = querySelect.append(" WHERE").append(whereParamsQuery);
 
-        log.info("sql query where section: {}" , queryString);
-
-
+        log.debug("sql query where section: {}", queryString);
 
         Query query = em.createNativeQuery(queryString.toString());
 
-        if (params!= null) {
+        if (params != null) {
             if (params.getName() != null && !params.getName().isBlank()) {
-                query.setParameter("name",params.getName());
+                query.setParameter("name", params.getName());
             }
             if (params.getType() != null && !params.getType().isBlank()) {
-                query.setParameter("type",params.getType());
+                query.setParameter("type", params.getType());
             }
             if (params.getCreated() != null) {
-                query.setParameter("created",params.getCreated());
+                query.setParameter("created", params.getCreated());
             }
             if (params.getSupplier() != null && !params.getSupplier().isBlank()) {
-                query.setParameter("supplier",params.getSupplier());
+                query.setParameter("supplier", params.getSupplier());
             }
             if (params.getStatus() != null && !params.getStatus().isBlank()) {
-                query.setParameter("status",params.getStatus());
+                query.setParameter("status", params.getStatus());
             }
             if (params.getQuantityMin() != null && params.getQuantityMin() != -1) {
-                query.setParameter("quantityMin",params.getQuantityMin());
+                query.setParameter("quantityMin", params.getQuantityMin());
             }
             if (params.getQuantityMax() != null && params.getQuantityMax() != -1) {
-                query.setParameter("quantityMax",params.getQuantityMax());
+                query.setParameter("quantityMax", params.getQuantityMax());
             }
         }
-
         @SuppressWarnings("unchecked")
         List<Object[]> list = query.getResultList();
+        if (!list.isEmpty()) {
 
-        log.debug(list.toString());
-        log.debug(Arrays.toString(list.get(0)));
+            log.debug(list.toString());
+            log.debug(Arrays.toString(list.get(0)));
 
-        List<ProductListData> productList = new ArrayList<>();
-        list.forEach(product -> {
-            ProductListData productData = new ProductListData();
-            productData.setId(String.valueOf(((Float) product[0]).longValue()));
-            productData.setName((String) product[1]);
-            productData.setType((String) product[2]);
-            productData.setQuantity(String.valueOf(((Float) product[3]).longValue()));
-            productData.setCreated(((Timestamp) product[4]).toLocalDateTime());
-            productData.setStatus((String) product[5]);
-            productData.setSupplier((String) product[6]);
-            if (product[7]!=null) {
-                productData.setModified(((Timestamp) product[7]).toLocalDateTime());
-            }
-            productList.add(productData);
-        });
-        log.debug(productList.toString());
-        return productList;
-
+            List<ProductListData> productList = new ArrayList<>();
+            list.forEach(product -> {
+                ProductListData productData = new ProductListData();
+                productData.setId(String.valueOf(((Float) product[0]).longValue()));
+                productData.setName((String) product[1]);
+                productData.setType((String) product[2]);
+                productData.setQuantity(String.valueOf(((Float) product[3]).longValue()));
+                productData.setCreated(((Timestamp) product[4]).toLocalDateTime().toLocalDate());
+                productData.setStatus((String) product[5]);
+                productData.setSupplier((String) product[6]);
+                if (product[7] != null) {
+                    productData.setModified(((Timestamp) product[7]).toLocalDateTime().toLocalDate());
+                }
+                productList.add(productData);
+            });
+            log.debug(productList.toString());
+            return productList;
+        }
+        return List.of();
     }
 }

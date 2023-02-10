@@ -20,17 +20,10 @@ public class StorageController {
         this.storageService = storageService;
     }
 
-    @GetMapping("")
-    public List<Product> getProducts() {
-        //        TODO securityCheck etc
-        return storageService.getProducts();
-    }
-
     @PostMapping("")
-    public void getProductsTest(@RequestBody FilterParams params) {
-        System.out.println("posting filters");
+    public List<ProductListData> getProducts(@RequestBody FilterParams params) {
         List<ProductListData> productsFiltered = storageService.getProductsFiltered(params);
-        System.out.println(productsFiltered);
+        return productsFiltered;
     }
 
     @GetMapping("/{id}")
