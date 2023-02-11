@@ -5,7 +5,6 @@ import { StorageService } from '../storage.service';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { ISearchFilter } from '../model/search-filters-model';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { IFilterParams } from '../model/filterParams-model';
 
@@ -33,6 +32,7 @@ export class StorageListComponent implements OnInit, AfterViewInit {
     quantityMax: -1,
     created: this.getInitDate()
   }
+  statuses = ["asdas","ASdasd","Asdasd","Asdasd"]
 
   constructor(private storageService: StorageService, private fb: FormBuilder) { }
 
@@ -88,6 +88,10 @@ export class StorageListComponent implements OnInit, AfterViewInit {
       created: new FormControl({ value: this.searchValues.created, disabled: false }),
     })
     return form;
+  }
+
+  getStatuses() {
+    this.storageService.getStatus();
   }
 
 }

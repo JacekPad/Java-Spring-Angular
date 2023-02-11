@@ -3,8 +3,8 @@ package my.project.storage.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import my.project.storage.model.data.FilterParams;
-import my.project.storage.model.data.ProductListData;
 import my.project.storage.model.entity.Product;
+import my.project.storage.model.entity.Status;
 import my.project.storage.service.StorageService;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +21,13 @@ public class StorageController {
     }
 
     @PostMapping("")
-    public List<ProductListData> getProducts(@RequestBody FilterParams params) {
-        List<ProductListData> productsFiltered = storageService.getProductsFiltered(params);
+    public List<Product> getProducts(@RequestBody FilterParams params) {
+        List<Product> productsFiltered = storageService.getProductsFiltered(params);
+        return productsFiltered;
+    }
+    @GetMapping("")
+    public List<Product> getProduct() {
+        List<Product> productsFiltered = storageService.getAllProducts();
         return productsFiltered;
     }
 
@@ -48,6 +53,15 @@ public class StorageController {
     //        TODO securityCheck etc
     public void updateProduct(@PathVariable Long id) {
         storageService.updateProduct(id);
+    }
+
+    @GetMapping("/status")
+    public List<Status> getStatus() {
+        System.out.println("stauyts?");
+        List<Status> status = storageService.getStatus();
+        System.out.println(status);
+        return status;
+
     }
 
 }

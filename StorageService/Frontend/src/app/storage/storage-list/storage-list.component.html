@@ -31,7 +31,11 @@
             <!-- TODO different date type? -->
             <mat-form-field class="filter-input" appearance="fill">
                 <mat-label>Status - probably list</mat-label>
-                <input formControlName="status" matInput>
+                <mat-select>
+                    <mat-option value=""></mat-option>
+                    <mat-option *ngFor="let status of statuses" value="status">{{status}}</mat-option>
+                </mat-select>
+                <!-- <input formControlName="status" matInput> -->
             </mat-form-field>
 
             <mat-form-field class="filter-input" appearance="fill">

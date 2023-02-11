@@ -3,11 +3,11 @@ package my.project.storage.service;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import my.project.storage.model.data.FilterParams;
-import my.project.storage.model.data.ProductListData;
 import my.project.storage.model.entity.Product;
+import my.project.storage.model.entity.Status;
+import my.project.storage.repository.StatusRepository;
 import my.project.storage.repository.StorageRepository;
 import my.project.storage.repository.StorageRepositoryExt;
-import my.project.storage.repository.StorageRepositoryExtImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,12 +20,18 @@ public class StorageService {
 
     private StorageRepositoryExt storageRepositoryExt;
 
-    StorageService (StorageRepository storageRepository, StorageRepositoryExt storageRepositoryExt) {
+    private StatusRepository statusRepository;
+
+    StorageService (StorageRepository storageRepository, StorageRepositoryExt storageRepositoryExt, StatusRepository statusRepository) {
         this.storageRepository = storageRepository;
         this.storageRepositoryExt = storageRepositoryExt;
+        this.statusRepository = statusRepository;
     }
-    public List<ProductListData> getProductsFiltered(FilterParams params) {
+    public List<Product> getProductsFiltered(FilterParams params) {
         return storageRepositoryExt.findByFilters(params);
+    }
+    public List<Product> getAllProducts() {
+        return storageRepository.findAll();
     }
 
     public void addProduct(Product product) {
@@ -50,5 +56,9 @@ public class StorageService {
 //        TODO changePut????
         storageRepository.save(storageRepository.findById(id).get());
 
+    }
+
+    public List<Status> getStatus() {
+        return statusRepository.findAll();
     }
 }

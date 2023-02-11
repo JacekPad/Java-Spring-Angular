@@ -4,18 +4,13 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import lombok.extern.slf4j.Slf4j;
+import my.project.storage.mappers.QueryMapper;
 import my.project.storage.model.data.FilterParams;
-import my.project.storage.model.data.ProductListData;
 import my.project.storage.model.entity.Product;
-import org.springframework.data.domain.Page;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 @Repository
 @Slf4j
@@ -24,11 +19,16 @@ public class StorageRepositoryExtImpl implements StorageRepositoryExt {
     @PersistenceContext
     private EntityManager em;
 
+    @Autowired
+    QueryMapper queryMapper;
+
+    /** Taking search params from frontend request and querying results from database **/
     @Override
-    public List<ProductListData> findByFilters(FilterParams params) {
+    public List<Product> findByFilters(FilterParams params) {
         StringBuilder querySelect = new StringBuilder("SELECT * FROM PRODUCTS p");
         StringBuilder whereParamsQuery = new StringBuilder();
 
+//      Adding search params
         if (params != null) {
             if (params.getName() != null && !params.getName().isBlank()) {
                 whereParamsQuery.append(" UPPER(p.NAME) LIKE UPPER(:name)");
@@ -100,29 +100,10 @@ public class StorageRepositoryExtImpl implements StorageRepositoryExt {
             }
         }
         @SuppressWarnings("unchecked")
-        List<Object[]> list = query.getResultList();
-        if (!list.isEmpty()) {
-
-            log.debug(list.toString());
-            log.debug(Arrays.toString(list.get(0)));
-
-            List<ProductListData> productList = new ArrayList<>();
-            list.forEach(product -> {
-                ProductListData productData = new ProductListData();
-                productData.setId(String.valueOf(((Float) product[0]).longValue()));
-                productData.setName((String) product[1]);
-                productData.setType((String) product[2]);
-                productData.setQuantity(String.valueOf(((Float) product[3]).longValue()));
-                productData.setCreated(((Timestamp) product[4]).toLocalDateTime().toLocalDate());
-                productData.setStatus((String) product[5]);
-                productData.setSupplier((String) product[6]);
-                if (product[7] != null) {
-                    productData.setModified(((Timestamp) product[7]).toLocalDateTime().toLocalDate());
-                }
-                productList.add(productData);
-            });
-            log.debug(productList.toString());
-            return productList;
+        List<Object[]> queryResultList = query.getResultList();
+        if (!queryResultList.isEmpty()) {
+            //Mapping all query results to product object
+            return queryMapper.mapQueryResultToProductList(queryResultList);
         }
         return List.of();
     }
