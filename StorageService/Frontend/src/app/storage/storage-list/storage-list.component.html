@@ -1,0 +1,95 @@
+<div>
+    <p>Search filters:</p>
+    <form [formGroup]="searchFilterForm">
+        <div class="filters">
+
+            <mat-form-field class="filter-input" appearance="fill">
+                <mat-label>Name</mat-label>
+                <input formControlName="name" matInput>
+            </mat-form-field>
+
+            <!-- TODO different type? -->
+            <mat-form-field class="filter-input" appearance="fill">
+                <mat-label>Type Probbably list</mat-label>
+                <input formControlName="type" matInput>
+            </mat-form-field>
+
+            <mat-form-field class="filter-input" appearance="fill">
+                <mat-label>Created before</mat-label>
+                <input formControlName="created" matInput [matDatepicker]="createdDate" placeholder="Choose a date">
+                <mat-datepicker-toggle matIconSuffix [for]="createdDate"></mat-datepicker-toggle>
+                <mat-datepicker #createdDate></mat-datepicker>
+            </mat-form-field>
+
+            <!-- TODO different type? -->
+            <mat-form-field class="filter-input" appearance="fill">
+                <mat-label>Supplier - list?</mat-label>
+                <input formControlName="supplier" matInput>
+            </mat-form-field>
+
+            <mat-form-field class="filter-input" appearance="fill">
+                <mat-label>Status - probably list</mat-label>
+                <mat-select formControlName="status">
+                    <mat-option value=""></mat-option>
+                    <mat-option *ngFor="let status of statusList" value="{{status.code}}">{{status.value}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="filter-input" appearance="fill">
+                <mat-label>Quantity min</mat-label>
+                <input formControlName="quantityMin" type="number" min="-1" [defaultValue]="0" matInput>
+            </mat-form-field>
+
+            <mat-form-field class="filter-input" appearance="fill">
+                <mat-label>Quantity max</mat-label>
+                <input formControlName="quantityMax" type="number" min="-1" [defaultValue]="-1" matInput>
+            </mat-form-field>
+
+        </div>
+        <!-- TODO - fix button placement -->
+        <button mat-raised-button (click)="searchButton()">Search</button>
+    </form>
+
+    <div class="main-table">
+        <table mat-table matSort [dataSource]="dataToDisplay">
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                <td mat-cell *matCellDef="let product"> {{product.name}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>
+                <td mat-cell *matCellDef="let product"> {{product.type}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="quantity">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Quantity </th>
+                <td mat-cell *matCellDef="let product"> {{product.quantity}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+                <td mat-cell *matCellDef="let product"> {{product.status}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="created">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Created </th>
+                <td mat-cell *matCellDef="let product"> {{product.created}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="supplier">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Supplier </th>
+                <td mat-cell *matCellDef="let product"> {{product.supplier}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="modified">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Modified </th>
+                <td mat-cell *matCellDef="let product"> {{product.modified}}</td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row (click)="getProductDetails(rowData.id)" *matRowDef="let rowData; columns: displayedColumns">
+            </tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 15, 50, 100]"></mat-paginator>
+    </div>
