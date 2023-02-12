@@ -20,12 +20,12 @@ public class StorageService {
 
     private StorageRepositoryExt storageRepositoryExt;
 
-    private StatusRepository statusRepository;
+    private StatusService statusService;
 
-    StorageService (StorageRepository storageRepository, StorageRepositoryExt storageRepositoryExt, StatusRepository statusRepository) {
+    StorageService (StorageRepository storageRepository, StorageRepositoryExt storageRepositoryExt, StatusService statusService) {
         this.storageRepository = storageRepository;
         this.storageRepositoryExt = storageRepositoryExt;
-        this.statusRepository = statusRepository;
+        this.statusService = statusService;
     }
     public List<Product> getProductsFiltered(FilterParams params) {
         return storageRepositoryExt.findByFilters(params);
@@ -59,6 +59,6 @@ public class StorageService {
     }
 
     public List<Status> getStatus() {
-        return statusRepository.findAll();
+        return statusService.getStatus();
     }
 }

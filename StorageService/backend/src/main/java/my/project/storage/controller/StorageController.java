@@ -57,9 +57,7 @@ public class StorageController {
 
     @GetMapping("/status")
     public List<Status> getStatus() {
-        System.out.println("stauyts?");
         List<Status> status = storageService.getStatus();
-        System.out.println(status);
         return status;
 
     }

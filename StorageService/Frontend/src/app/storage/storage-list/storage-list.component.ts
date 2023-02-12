@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { IFilterParams } from '../model/filterParams-model';
+import { IStatus, Status } from '../model/status-model';
 
 @Component({
   selector: 'app-storage-list',
@@ -22,6 +23,7 @@ export class StorageListComponent implements OnInit, AfterViewInit {
   dataToDisplay = new MatTableDataSource();
   displayedColumns = ['name', 'type', 'quantity', 'status', 'supplier', 'created', 'modified'];
   searchFilterForm!: FormGroup;
+  statusList?: IStatus[];
 
   searchValues: IFilterParams = {
     name: '',
@@ -32,14 +34,12 @@ export class StorageListComponent implements OnInit, AfterViewInit {
     quantityMax: -1,
     created: this.getInitDate()
   }
-  statuses = ["asdas","ASdasd","Asdasd","Asdasd"]
 
   constructor(private storageService: StorageService, private fb: FormBuilder) { }
 
   ngOnInit(): void {
-    this.storageService.getProductsFiltered(this.searchValues).subscribe(resp => {
-      this.dataToDisplay.data = resp
-    })
+    this.getStatusList();
+    this.getProductList();
     this.searchFilterForm = this.getFilterForm();
     this.updateSearchValues();
   }
@@ -59,9 +59,7 @@ export class StorageListComponent implements OnInit, AfterViewInit {
   }
 
   searchButton() {
-    this.storageService.getProductsFiltered(this.searchValues).subscribe(resp => {
-      this.dataToDisplay.data = resp
-    });
+    this.getProductList();
   }
 
   updateSearchValues() {
@@ -90,8 +88,23 @@ export class StorageListComponent implements OnInit, AfterViewInit {
     return form;
   }
 
-  getStatuses() {
-    this.storageService.getStatus();
+  getProductList() {
+    this.storageService.getProductsFiltered(this.searchValues).subscribe(products => {
+      this.dataToDisplay.data = products
+      products.forEach(product => {
+        this.statusList?.forEach(status => {
+          if (product.status == status.code) {
+            product.status = status.value;
+          } 
+        });
+      });
+    });
   }
 
+  getStatusList() {
+    this.storageService.getStatus().subscribe(resp => {
+      this.statusList = resp;
+    });
+  }
 }
+
