@@ -8,13 +8,12 @@
                 <input formControlName="name" matInput>
             </mat-form-field>
 
-            <!-- TODO different date type? -->
+            <!-- TODO different type? -->
             <mat-form-field class="filter-input" appearance="fill">
                 <mat-label>Type Probbably list</mat-label>
                 <input formControlName="type" matInput>
             </mat-form-field>
 
-            <!-- TODO different date type? -->
             <mat-form-field class="filter-input" appearance="fill">
                 <mat-label>Created before</mat-label>
                 <input formControlName="created" matInput [matDatepicker]="createdDate" placeholder="Choose a date">
@@ -22,7 +21,7 @@
                 <mat-datepicker #createdDate></mat-datepicker>
             </mat-form-field>
 
-            <!-- TODO different date type? -->
+            <!-- TODO different type? -->
             <mat-form-field class="filter-input" appearance="fill">
                 <mat-label>Supplier - list?</mat-label>
                 <input formControlName="supplier" matInput>

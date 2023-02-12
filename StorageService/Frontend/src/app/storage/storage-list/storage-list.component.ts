@@ -89,6 +89,7 @@ export class StorageListComponent implements OnInit, AfterViewInit {
   }
 
   getProductList() {
+    // get products from backend and map correct status value to each product
     this.storageService.getProductsFiltered(this.searchValues).subscribe(products => {
       this.dataToDisplay.data = products
       products.forEach(product => {
