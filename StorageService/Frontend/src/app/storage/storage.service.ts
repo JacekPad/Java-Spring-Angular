@@ -19,7 +19,7 @@ export class StorageService {
   }
 
   getProduct(productId: number): Observable<Product> {
-    return this.http.get<Product>(this.baseUrl + productId);
+    return this.http.get<Product>(this.baseUrl + "/" + productId);
   }
 
   createProduct(product: Product): void {

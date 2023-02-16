@@ -3,9 +3,9 @@ package my.project.storage.service;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import my.project.storage.model.data.FilterParams;
+import my.project.storage.model.data.StatusData;
 import my.project.storage.model.entity.Product;
-import my.project.storage.model.entity.Status;
-import my.project.storage.repository.StatusRepository;
+import my.project.storage.model.enums.StatusEnum;
 import my.project.storage.repository.StorageRepository;
 import my.project.storage.repository.StorageRepositoryExt;
 import org.springframework.stereotype.Service;
@@ -20,12 +20,10 @@ public class StorageService {
 
     private StorageRepositoryExt storageRepositoryExt;
 
-    private StatusService statusService;
 
-    StorageService (StorageRepository storageRepository, StorageRepositoryExt storageRepositoryExt, StatusService statusService) {
+    StorageService (StorageRepository storageRepository, StorageRepositoryExt storageRepositoryExt) {
         this.storageRepository = storageRepository;
         this.storageRepositoryExt = storageRepositoryExt;
-        this.statusService = statusService;
     }
     public List<Product> getProductsFiltered(FilterParams params) {
         return storageRepositoryExt.findByFilters(params);
@@ -58,7 +56,7 @@ public class StorageService {
 
     }
 
-    public List<Status> getStatus() {
-        return statusService.getStatus();
+    public List<StatusData> getStatus() {
+        return StatusData.convertToStatusData(List.of(StatusEnum.values()));
     }
 }

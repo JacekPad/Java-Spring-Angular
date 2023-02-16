@@ -7,7 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     StorageListComponent,
-    StorageDetailsComponent
+    StorageDetailsComponent,
   ],
   imports: [
     CommonModule,
