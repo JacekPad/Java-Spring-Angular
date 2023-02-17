@@ -56,7 +56,7 @@ export class StorageListComponent implements OnInit, AfterViewInit {
   }
 
   getProductDetails(productId: number) {
-    this.router.navigate(['/products/',productId])
+    this.router.navigate(['/products/',productId, {isViewMode: true}])
   }
 
   searchButton() {
