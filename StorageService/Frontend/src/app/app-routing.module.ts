@@ -9,7 +9,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes), StorageRoutingModule],
+  imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'}), StorageRoutingModule],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

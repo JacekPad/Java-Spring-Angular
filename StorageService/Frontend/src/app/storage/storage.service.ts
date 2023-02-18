@@ -22,8 +22,8 @@ export class StorageService {
     return this.http.get<Product>(this.baseUrl + "/" + productId);
   }
 
-  createProduct(product: Product): void {
-    this.http.post<Product>(this.baseUrl + "/add", product);
+  saveProduct(product: Product): void {
+    this.http.post<Product>(this.baseUrl + "/add", product).subscribe();
   }
 
   getProductsFiltered(params: FilterParams): Observable<Product[]> {

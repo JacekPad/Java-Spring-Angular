@@ -2,6 +2,7 @@ package my.project.storage.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import my.project.storage.model.data.FilterParams;
 import my.project.storage.model.data.StatusData;
 import my.project.storage.model.entity.Product;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class StorageService {
 
     private StorageRepository storageRepository;
@@ -33,6 +35,7 @@ public class StorageService {
     }
 
     public void addProduct(Product product) {
+        log.info("Adding product: {}", product);
         storageRepository.save(product);
     }
 

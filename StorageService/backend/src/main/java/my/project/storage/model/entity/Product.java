@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -12,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 @Table(name = "PRODUCTS")
 @Getter
 @Setter
+@ToString
 public class Product {
 
     @Id
@@ -35,11 +37,11 @@ public class Product {
     private String supplier;
 
     @Column(name = "CREATED")
-    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="dd-MM-yyyy HH:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime created;
     @Column(name = "MODIFIED")
-    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="dd-MM-yyyy HH:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime modified;
 

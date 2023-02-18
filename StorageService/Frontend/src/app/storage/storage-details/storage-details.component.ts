@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { StorageMode } from '../enums/storage-mode.enum';
 import { Product } from '../model/product-model';
+import { IStatus } from '../model/status-model';
 import { StorageService } from '../storage.service';
 
 @Component({
@@ -12,29 +14,29 @@ import { StorageService } from '../storage.service';
 export class StorageDetailsComponent implements OnInit {
 
   constructor(private storageService: StorageService, private activatedRoute: ActivatedRoute, private fb: FormBuilder) { };
-
-
-
+  @Input() storageMode!: StorageMode;
   product?: Product
   selectedId: number = -1;
   productForm?: FormGroup;
-  isViewMode: boolean = false;
-
-
+  statusList!: IStatus[];
 
   ngOnInit(): void {
-    this.activatedRoute.paramMap.subscribe(param => {
-      this.isViewMode = param.get('isViewMode') === 'true';
-      this.selectedId = Number(param.get('id'));
-      if (this.selectedId > 0 && this.isViewMode) {
-        this.storageService.getProduct(this.selectedId).subscribe(prodcut => {
-          this.product = prodcut;
-          this.fillFormValues();
-        });
-      };
-    });
+    this.getStatusList();
     this.productForm = this.getProductForm();
-
+    this.activatedRoute.paramMap.subscribe(param => {
+      this.selectedId = Number(param.get('id'));
+    })
+    if (this.storageMode == StorageMode.VIEW) {
+      this.storageService.getProduct(this.selectedId).subscribe(product => {
+        this.product = product;
+        this.fillFormValues();
+        this.getProductData();
+      })
+    }
+    if (this.storageMode == StorageMode.ADD) {
+      this.product = new Product();
+      this.getProductData();
+    }
   }
 
   getProductForm(): FormGroup {
@@ -44,13 +46,11 @@ export class StorageDetailsComponent implements OnInit {
       quantity: new FormControl({ value: '', disabled: this.isDisabled() }),
       status: new FormControl({ value: '', disabled: this.isDisabled() }),
       supplier: new FormControl({ value: '', disabled: this.isDisabled() }),
-      created: new FormControl({ value: '', disabled: this.isDisabled() }),
-      modified: new FormControl({ value: '', disabled: this.isDisabled() })
     });
   }
 
   isDisabled(): boolean {
-    return this.isViewMode;
+    return this.storageMode == StorageMode.VIEW;
   }
 
   fillFormValues(): void {
@@ -64,37 +64,47 @@ export class StorageDetailsComponent implements OnInit {
   }
 
   editProduct() {
-    this.isViewMode = false;
+    this.storageMode = StorageMode.EDIT;
     this.productForm?.enable();
   }
 
   saveProduct() {
-    let product: Product = new Product();
-    if (!this.product) {
-      product = this.getProductData();
-    } else {
-      product = this.product;
+    if (this.product) {
+      this.storageService.saveProduct(this.product);
     }
-    if (this.validateForm()){
-      this.storageService.createProduct(product);
-    }
-
   }
 
-  getProductData(): Product {
-    let product: Product = new Product();
-    product.name = this.productForm?.get('name')?.value;
-    product.type = this.productForm?.get('type')?.value;
-    product.quantity = this.productForm?.get('quantity')?.value;
-    product.status = this.productForm?.get('status')?.value;
-    product.supplier = this.productForm?.get('supplier')?.value;
-    product.created = this.productForm?.get('created')?.value;
-    product.modified = this.productForm?.get('modified')?.value;
-    return product;
+  getProductData(): void {
+    this.productForm?.valueChanges.subscribe(form => {
+      if (this.product) {
+        this.product.name = form.name;
+        this.product.type = form.type;
+        this.product.quantity = form.quantity;
+        this.product.status = form.status;
+        this.product.supplier = form.supplier;
+      }
+    });
   }
 
-  validateForm():boolean {
-      return false;
+  formValid(): boolean {
+    return true;
+  }
+
+  isEditMode(): boolean {
+    return this.storageMode == StorageMode.EDIT;
+  }
+
+  isViewMode(): boolean {
+    return this.storageMode == StorageMode.VIEW;
+  }
+  isAddMode(): boolean {
+    return this.storageMode == StorageMode.ADD;
+  }
+
+  getStatusList() {
+    this.storageService.getStatus().subscribe(resp => {
+      this.statusList = resp;
+    });
   }
 
 }

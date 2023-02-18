@@ -28,7 +28,7 @@
             </mat-form-field>
 
             <mat-form-field class="filter-input" appearance="fill">
-                <mat-label>Status - probably list</mat-label>
+                <mat-label>Status</mat-label>
                 <mat-select formControlName="status">
                     <mat-option value=""></mat-option>
                     <mat-option *ngFor="let status of statusList" value="{{status.code}}">{{status.value}}</mat-option>

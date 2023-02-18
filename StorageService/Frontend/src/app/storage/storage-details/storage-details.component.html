@@ -1,53 +1,31 @@
 <form *ngIf="productForm" [formGroup]="productForm">
-    <ng-container>
         <mat-form-field class="filter-input" appearance="fill">
             <mat-label>Name</mat-label>
             <input matInput formControlName="name">
         </mat-form-field>
-    </ng-container>
 
-    <ng-container>
         <mat-form-field class="filter-input" appearance="fill">
             <mat-label>Type</mat-label>
             <input matInput formControlName="type">
         </mat-form-field>
-    </ng-container>
-    
-    <ng-container>
+
         <mat-form-field class="filter-input" appearance="fill">
             <mat-label>Quantity</mat-label>
-            <input matInput formControlName="quantity">
+            <input type="number" min="0" matInput formControlName="quantity">
         </mat-form-field>
-    </ng-container>
-    
-    <ng-container>
-        <mat-form-field class="filter-input" appearance="fill">
-            <mat-label>Status</mat-label>
-            <input matInput formControlName="status">
-        </mat-form-field>
-    </ng-container>
-    
-    <ng-container>
+
+    <mat-form-field class="filter-input" appearance="fill">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+            <mat-option *ngFor="let status of statusList" value="{{status.code}}">{{status.value}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
         <mat-form-field class="filter-input" appearance="fill">
             <mat-label>Supplier</mat-label>
             <input matInput formControlName="supplier">
         </mat-form-field>
-    </ng-container>
-
-    <ng-container>
-        <mat-form-field class="filter-input" appearance="fill">
-            <mat-label>Created</mat-label>
-            <input matInput formControlName="created">
-        </mat-form-field>
-    </ng-container>
-
-    <ng-container>
-        <mat-form-field class="filter-input" appearance="fill">
-            <mat-label>Modified</mat-label>
-            <input matInput formControlName="modified">
-        </mat-form-field>
-    </ng-container>
 </form>
 
-<button *ngIf="isViewMode && product" (click)="editProduct()" mat-raised-button>Edit</button>
-<button *ngIf="!isViewMode" (click)="saveProduct()" mat-raised-button>Save</button>
+<button *ngIf="isViewMode()" (click)="editProduct()" mat-raised-button>Edit</button>
+<button *ngIf="!isViewMode()" (click)="saveProduct()" mat-raised-button>Save</button>

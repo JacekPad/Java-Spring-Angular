@@ -56,7 +56,7 @@ export class StorageListComponent implements OnInit, AfterViewInit {
   }
 
   getProductDetails(productId: number) {
-    this.router.navigate(['/products/',productId, {isViewMode: true}])
+    this.router.navigate(['/products/',productId, 'view'])
   }
 
   searchButton() {
@@ -73,7 +73,7 @@ export class StorageListComponent implements OnInit, AfterViewInit {
       this.searchValues.quantityMin = form.quantityMin;
       this.searchValues.quantityMax = form.quantityMax;
       this.searchValues.created = form.created;
-    })
+    });
   }
 
   getFilterForm(): FormGroup {
