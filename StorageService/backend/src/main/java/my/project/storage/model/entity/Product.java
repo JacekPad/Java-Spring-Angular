@@ -34,7 +34,7 @@ public class Product {
     private String status;
 
     @Column(name = "SUPPLIER")
-    private String supplier;
+    private Long supplier;
 
     @Column(name = "CREATED")
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="MM-dd-yyyy HH:mm:ss")

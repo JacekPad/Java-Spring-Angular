@@ -13,6 +13,7 @@ import { TopbarComponent } from './topbar/topbar.component';
 import { MaterialModule } from './material.module';
 import { AppRoutingModule } from './app-routing.module';
 import { DatePipe } from '@angular/common';
+import { SupplierModule } from './supplier/supplier.module';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { DatePipe } from '@angular/common';
     StorageModule,
     AppRoutingModule,
     HttpClientModule,
-    MaterialModule
+    MaterialModule,
+    SupplierModule
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]

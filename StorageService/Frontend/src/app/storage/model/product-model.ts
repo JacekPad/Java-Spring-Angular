@@ -6,7 +6,7 @@ export interface IProduct {
     created: Date;
     modified: Date;
     status: String;
-    supplier: String
+    supplier: string
 }
 
 export class Product {
@@ -17,7 +17,7 @@ export class Product {
     public created: Date;
     public modified: Date;
     public status: String;
-    public supplier: String;
+    public supplier: string;
 
     constructor();
     constructor(obj: IProduct);

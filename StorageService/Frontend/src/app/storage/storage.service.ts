@@ -4,6 +4,7 @@ import { Product } from './model/product-model';
 import { Observable } from 'rxjs';
 import { FilterParams } from './model/filterParams-model';
 import { IStatus } from './model/status-model';
+import { ISupplier } from '../supplier/model/supplier-model';
 
 @Injectable({
   providedIn: 'root'

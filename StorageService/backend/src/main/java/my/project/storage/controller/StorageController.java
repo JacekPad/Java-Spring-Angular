@@ -50,12 +50,6 @@ public class StorageController {
         storageService.removeProduct(id);
     }
 
-    @PutMapping("/{id}")
-    //        TODO securityCheck etc
-    public void updateProduct(@PathVariable Long id) {
-        storageService.updateProduct(id);
-    }
-
     @GetMapping("/status")
     public List<StatusData> getStatus() {
         return storageService.getStatus();
