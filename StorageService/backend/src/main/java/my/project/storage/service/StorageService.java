@@ -53,12 +53,6 @@ public class StorageService {
         storageRepository.delete(storageRepository.findById(id).get());
     }
 
-    public void updateProduct(Long id) {
-//        TODO changePut????
-        storageRepository.save(storageRepository.findById(id).get());
-
-    }
-
     public List<StatusData> getStatus() {
         return StatusData.convertToStatusData(List.of(StatusEnum.values()));
     }
