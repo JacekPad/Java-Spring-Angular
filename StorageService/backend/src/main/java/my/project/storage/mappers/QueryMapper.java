@@ -25,7 +25,7 @@ public class QueryMapper {
             productData.setQuantity(((Float) product[3]).longValue());
             productData.setCreated(((Timestamp) product[4]).toLocalDateTime());
             productData.setStatus((String) product[5]);
-            productData.setSupplier((String) product[6]);
+            productData.setSupplier(((Float) product[6]).longValue());
             if (product[7] != null) {
                 productData.setModified(((Timestamp) product[7]).toLocalDateTime());
             }

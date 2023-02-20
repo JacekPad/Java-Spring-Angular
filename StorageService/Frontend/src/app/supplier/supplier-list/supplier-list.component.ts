@@ -15,7 +15,7 @@ export class SupplierListComponent implements OnInit{
 
   constructor(private supplierService: SupplierService) { }
   dataToDisplay = new MatTableDataSource();
-  displayedColumns = ['name', 'address', 'phoneNumber'];
+  displayedColumns = ['name'];
 
   ngOnInit(): void {
     this.getSuppliers();
@@ -23,8 +23,19 @@ export class SupplierListComponent implements OnInit{
 
   getSuppliers() {
     this.supplierService.getSuppliers().subscribe(suppliers => {
+      suppliers.forEach(supplier => {
+        
+      })
       this.dataToDisplay.data = suppliers
     });
+  }
+
+  getSupplierDetails(rowId: number) {
+    console.log(rowId);
+  }
+
+  getNumberOfProducts(supplierId: number) {
+    this.supplierService.getNumberOfProducts(supplierId);
   }
 
 }

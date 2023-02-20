@@ -16,4 +16,12 @@ export class SupplierService {
     return this.http.get<ISupplier[]>(this.baseURL);
   }
 
+  getNumberOfProducts(supplierId: number) {
+    return this.http.get<ISupplier>(this.baseURL + "/product-count/" + supplierId);
+  }
+
+  getSupplier(supplierId: string): Observable<ISupplier> {
+    return this.http.get<ISupplier>(this.baseURL + "/" + supplierId);
+  }
+
 }

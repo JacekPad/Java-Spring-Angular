@@ -18,11 +18,17 @@ public class Supplier {
     @Column(name = "NAME")
     String name;
 
-    @Column(name = "ADDRESS")
+    @Column(name = "STREET")
     String address;
 
     @Column(name = "PHONE_NUMBER")
     String phoneNumber;
+
+    @Column(name = "ZIP_CODE")
+    String zipCode;
+
+    @Column(name = "COUNTRY")
+    String country;
 
 
 

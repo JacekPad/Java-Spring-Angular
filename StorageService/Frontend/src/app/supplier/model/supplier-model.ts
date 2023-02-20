@@ -3,6 +3,7 @@ export interface ISupplier {
     name: string
     phoneNumber: string
     address: string
+    numberOfProducts: number;
 }
 
 export class Supplier {
@@ -10,6 +11,7 @@ export class Supplier {
     public name: string;
     public phoneNumber: string;
     public address: string;
+    public numberOfProducts: number;
 
     constructor();
     constructor(obj: ISupplier);
@@ -18,5 +20,6 @@ export class Supplier {
         this.name = obj && obj.name;
         this.phoneNumber = obj && obj.phoneNumber;
         this.address = obj && obj.address;
+        this.numberOfProducts = obj && obj.numberOfProducts;
     }
 }

@@ -21,10 +21,12 @@
                 <mat-datepicker #createdDate></mat-datepicker>
             </mat-form-field>
 
-            <!-- TODO different type? -->
             <mat-form-field class="filter-input" appearance="fill">
-                <mat-label>Supplier - list?</mat-label>
-                <input formControlName="supplier" matInput>
+                <mat-label>Supplier</mat-label>
+                <mat-select formControlName="supplier">
+                    <mat-option value=""></mat-option>
+                    <mat-option *ngFor="let supplier of supplierList" value="{{supplier.id}}">{{supplier.name}}</mat-option>
+                </mat-select>
             </mat-form-field>
 
             <mat-form-field class="filter-input" appearance="fill">

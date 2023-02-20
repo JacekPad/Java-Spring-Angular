@@ -1,17 +1,16 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { Observable, switchMap } from 'rxjs';
-import { Product } from '../model/product-model';
+import { Observable } from 'rxjs';
 import { StorageService } from '../storage.service';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { IFilterParams } from '../model/filterParams-model';
-import { IStatus, Status } from '../model/status-model';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { IStatus } from '../model/status-model';
+import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
-import { Pipe, PipeTransform } from '@angular/core';
-import { formatDate } from '@angular/common';
+import { SupplierService } from 'src/app/supplier/supplier.service';
+import { ISupplier } from 'src/app/supplier/model/supplier-model';
 
 @Component({
   selector: 'app-storage-list',
@@ -27,7 +26,7 @@ export class StorageListComponent implements OnInit, AfterViewInit {
   displayedColumns = ['name', 'type', 'quantity', 'status', 'supplier', 'created', 'modified'];
   searchFilterForm!: FormGroup;
   statusList?: IStatus[];
-
+  supplierList?: ISupplier[];
   searchValues: IFilterParams = {
     name: '',
     type: '',
@@ -38,9 +37,12 @@ export class StorageListComponent implements OnInit, AfterViewInit {
     created: this.getInitDate()
   }
 
-  constructor(private storageService: StorageService, private fb: FormBuilder, private router: Router, private datePipe: DatePipe) { }
+  constructor(private storageService: StorageService, private fb: FormBuilder, private router: Router, private datePipe: DatePipe, private supplierService: SupplierService) { }
 
   ngOnInit(): void {
+    this.getSuppliers().subscribe(suppliers => {
+      this.supplierList = suppliers;
+    });
     this.getStatusList();
     this.getProductList();
     this.searchFilterForm = this.getFilterForm();
@@ -99,8 +101,13 @@ export class StorageListComponent implements OnInit, AfterViewInit {
         this.statusList?.forEach(status => {
           if (product.status == status.code) {
             product.status = status.value;
-          }
+            }
         });
+        this.supplierList?.forEach(supplier => {
+          if (supplier.id.toString() == product.supplier) {
+              product.supplier = supplier.name;
+          }
+        })
       });
     });
   }
@@ -109,6 +116,10 @@ export class StorageListComponent implements OnInit, AfterViewInit {
     this.storageService.getStatus().subscribe(resp => {
       this.statusList = resp;
     });
+  }
+
+  getSuppliers(): Observable<ISupplier[]> {
+    return this.supplierService.getSuppliers();
   }
 }
 

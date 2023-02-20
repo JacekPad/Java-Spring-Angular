@@ -39,4 +39,9 @@ public class SupplierController {
     public void deleteSupplier(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response) {
         supplierService.deleteSupplier(id, response, request);
     }
+
+    @GetMapping("/product-count/{id}")
+    public Long getNumberOfProducts(@PathVariable Long id) {
+        return supplierService.getProductCountForSupplier(id);
+    }
 }
