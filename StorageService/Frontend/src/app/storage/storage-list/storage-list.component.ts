@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 import { Product } from '../model/product-model';
 import { StorageService } from '../storage.service';
 import { MatSort } from '@angular/material/sort';
@@ -8,6 +8,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { IFilterParams } from '../model/filterParams-model';
 import { IStatus, Status } from '../model/status-model';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { DatePipe } from '@angular/common';
+import { Pipe, PipeTransform } from '@angular/core';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-storage-list',
@@ -35,7 +39,7 @@ export class StorageListComponent implements OnInit, AfterViewInit {
     created: this.getInitDate()
   }
 
-  constructor(private storageService: StorageService, private fb: FormBuilder) { }
+  constructor(private storageService: StorageService, private fb: FormBuilder, private router: Router, private datePipe: DatePipe) { }
 
   ngOnInit(): void {
     this.getStatusList();
@@ -55,7 +59,7 @@ export class StorageListComponent implements OnInit, AfterViewInit {
   }
 
   getProductDetails(productId: number) {
-    console.log(productId);
+    this.router.navigate(['/products/',productId, 'view'])
   }
 
   searchButton() {
@@ -72,7 +76,7 @@ export class StorageListComponent implements OnInit, AfterViewInit {
       this.searchValues.quantityMin = form.quantityMin;
       this.searchValues.quantityMax = form.quantityMax;
       this.searchValues.created = form.created;
-    })
+    });
   }
 
   getFilterForm(): FormGroup {
@@ -96,7 +100,7 @@ export class StorageListComponent implements OnInit, AfterViewInit {
         this.statusList?.forEach(status => {
           if (product.status == status.code) {
             product.status = status.value;
-          } 
+          }
         });
       });
     });

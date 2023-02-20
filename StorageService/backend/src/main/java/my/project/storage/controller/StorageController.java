@@ -3,8 +3,8 @@ package my.project.storage.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import my.project.storage.model.data.FilterParams;
+import my.project.storage.model.data.StatusData;
 import my.project.storage.model.entity.Product;
-import my.project.storage.model.entity.Status;
 import my.project.storage.service.StorageService;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +25,7 @@ public class StorageController {
         List<Product> productsFiltered = storageService.getProductsFiltered(params);
         return productsFiltered;
     }
+
     @GetMapping("")
     public List<Product> getProduct() {
         List<Product> productsFiltered = storageService.getAllProducts();
@@ -56,10 +57,8 @@ public class StorageController {
     }
 
     @GetMapping("/status")
-    public List<Status> getStatus() {
-        List<Status> status = storageService.getStatus();
-        return status;
-
+    public List<StatusData> getStatus() {
+        return storageService.getStatus();
     }
 
 }

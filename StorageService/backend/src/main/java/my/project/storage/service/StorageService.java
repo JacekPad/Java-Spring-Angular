@@ -2,10 +2,11 @@ package my.project.storage.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import my.project.storage.model.data.FilterParams;
+import my.project.storage.model.data.StatusData;
 import my.project.storage.model.entity.Product;
-import my.project.storage.model.entity.Status;
-import my.project.storage.repository.StatusRepository;
+import my.project.storage.model.enums.StatusEnum;
 import my.project.storage.repository.StorageRepository;
 import my.project.storage.repository.StorageRepositoryExt;
 import org.springframework.stereotype.Service;
@@ -14,18 +15,17 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class StorageService {
 
     private StorageRepository storageRepository;
 
     private StorageRepositoryExt storageRepositoryExt;
 
-    private StatusService statusService;
 
-    StorageService (StorageRepository storageRepository, StorageRepositoryExt storageRepositoryExt, StatusService statusService) {
+    StorageService (StorageRepository storageRepository, StorageRepositoryExt storageRepositoryExt) {
         this.storageRepository = storageRepository;
         this.storageRepositoryExt = storageRepositoryExt;
-        this.statusService = statusService;
     }
     public List<Product> getProductsFiltered(FilterParams params) {
         return storageRepositoryExt.findByFilters(params);
@@ -35,6 +35,7 @@ public class StorageService {
     }
 
     public void addProduct(Product product) {
+        log.info("Adding product: {}", product);
         storageRepository.save(product);
     }
 
@@ -58,7 +59,7 @@ public class StorageService {
 
     }
 
-    public List<Status> getStatus() {
-        return statusService.getStatus();
+    public List<StatusData> getStatus() {
+        return StatusData.convertToStatusData(List.of(StatusEnum.values()));
     }
 }

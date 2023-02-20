@@ -6,9 +6,14 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum StatusEnum {
-    OK,
-    EMPTY,
-    WARNING,
-    ALMOST_EMPTY,
-    DELIVERING
-}
+
+    OK("OK","Ok"),
+    EMPTY("EMPTY","Empty"),
+    WARNING("WARNING","Warning"),
+    ALMOST_EMPTY("ALMOST_EMPTY","Almost empty"),
+    DELIVERING("DELIVERING","Delivering");
+    
+    private final String code;
+    private final String value;
+
+    }
