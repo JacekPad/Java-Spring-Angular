@@ -23,7 +23,6 @@ export class StorageListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) matSort!: MatSort;
 
-  products: Observable<Product[]> | undefined;
   dataToDisplay = new MatTableDataSource();
   displayedColumns = ['name', 'type', 'quantity', 'status', 'supplier', 'created', 'modified'];
   searchFilterForm!: FormGroup;
@@ -95,7 +94,7 @@ export class StorageListComponent implements OnInit, AfterViewInit {
   getProductList() {
     // get products from backend and map correct status value to each product
     this.storageService.getProductsFiltered(this.searchValues).subscribe(products => {
-      this.dataToDisplay.data = products
+      this.dataToDisplay.data = products;
       products.forEach(product => {
         this.statusList?.forEach(status => {
           if (product.status == status.code) {

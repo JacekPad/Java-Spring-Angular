@@ -13,5 +13,6 @@ public class CorsConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry corsRegistry) {
         corsRegistry.addMapping("/storage/**");
         corsRegistry.addMapping("/products/**");
+        corsRegistry.addMapping("/supplier/**");
     }
 }

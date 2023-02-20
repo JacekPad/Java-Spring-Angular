@@ -1,8 +1,8 @@
 <button routerLink="/"  mat-stroked-button class="sidebar-button">Product List</button>
 <!-- TODO redirect when clicked (already in a add template) -->
 <button [routerLink]="['/products',-1, 'add']" data="{isAddMode: true}" mat-stroked-button class="sidebar-button">Add product</button>
-<button mat-stroked-button class="sidebar-button">Supplier List</button>
-<button mat-stroked-button class="sidebar-button">Add Supplier</button>
+<button routerLink="supplier" mat-stroked-button class="sidebar-button">Supplier List</button>
+<button [routerLink]="['supplier', -1, 'add']" mat-stroked-button class="sidebar-button">Add Supplier</button>
 <button mat-stroked-button class="sidebar-button">Settings</button>
 <button mat-stroked-button class="sidebar-button">New stuff</button>
 <button mat-stroked-button class="sidebar-button">New stuff</button>
