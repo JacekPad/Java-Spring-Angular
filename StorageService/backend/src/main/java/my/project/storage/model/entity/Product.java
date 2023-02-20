@@ -37,11 +37,11 @@ public class Product {
     private String supplier;
 
     @Column(name = "CREATED")
-    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="MM-dd-yyyy HH:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime created;
     @Column(name = "MODIFIED")
-    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="MM-dd-yyyy HH:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime modified;
 

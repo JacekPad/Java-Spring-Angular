@@ -9,6 +9,9 @@ import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { IFilterParams } from '../model/filterParams-model';
 import { IStatus, Status } from '../model/status-model';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { DatePipe } from '@angular/common';
+import { Pipe, PipeTransform } from '@angular/core';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-storage-list',
@@ -36,7 +39,7 @@ export class StorageListComponent implements OnInit, AfterViewInit {
     created: this.getInitDate()
   }
 
-  constructor(private storageService: StorageService, private fb: FormBuilder, private router: Router) { }
+  constructor(private storageService: StorageService, private fb: FormBuilder, private router: Router, private datePipe: DatePipe) { }
 
   ngOnInit(): void {
     this.getStatusList();
@@ -97,7 +100,7 @@ export class StorageListComponent implements OnInit, AfterViewInit {
         this.statusList?.forEach(status => {
           if (product.status == status.code) {
             product.status = status.value;
-          } 
+          }
         });
       });
     });

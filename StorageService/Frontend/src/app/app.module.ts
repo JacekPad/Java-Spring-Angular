@@ -12,7 +12,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { TopbarComponent } from './topbar/topbar.component';
 import { MaterialModule } from './material.module';
 import { AppRoutingModule } from './app-routing.module';
-
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -31,7 +31,7 @@ import { AppRoutingModule } from './app-routing.module';
     HttpClientModule,
     MaterialModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
