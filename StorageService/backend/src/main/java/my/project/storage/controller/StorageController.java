@@ -55,4 +55,9 @@ public class StorageController {
         return storageService.getStatus();
     }
 
+    @GetMapping("/product-count/{id}")
+    public Long countBySupplier(@PathVariable Long id) {
+        return storageService.countBySupplier(id);
+    }
+
 }

@@ -9,19 +9,19 @@ import { ISupplier } from './model/supplier-model';
 export class SupplierService {
 
   constructor(private http: HttpClient) { }
-  baseURL: string = 'http://localhost:8080/supplier'
+  baseURL: string = 'http://localhost:8080/app/supplier'
 
 
   getSuppliers(): Observable<ISupplier[]> {
-    return this.http.get<ISupplier[]>(this.baseURL);
+    return this.http.get<ISupplier[]>("/app/supplier");
   }
 
   getNumberOfProducts(supplierId: number) {
-    return this.http.get<ISupplier>(this.baseURL + "/product-count/" + supplierId);
+    return this.http.get<ISupplier>("/app/supplier" + "/product-count/" + supplierId);
   }
 
   getSupplier(supplierId: string): Observable<ISupplier> {
-    return this.http.get<ISupplier>(this.baseURL + "/" + supplierId);
+    return this.http.get<ISupplier>("/app/supplier" + "/" + supplierId);
   }
 
 }
