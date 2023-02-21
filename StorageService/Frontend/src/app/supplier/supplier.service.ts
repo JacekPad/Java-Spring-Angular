@@ -9,8 +9,6 @@ import { ISupplier } from './model/supplier-model';
 export class SupplierService {
 
   constructor(private http: HttpClient) { }
-  baseURL: string = 'http://localhost:8080/app/supplier'
-
 
   getSuppliers(): Observable<ISupplier[]> {
     return this.http.get<ISupplier[]>("/app/supplier");
