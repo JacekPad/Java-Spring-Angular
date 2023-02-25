@@ -44,7 +44,11 @@ export class StorageListComponent implements OnInit, AfterViewInit {
       this.supplierList = suppliers;
     });
     this.getStatusList();
-    this.getProductList();
+    if (this.isProductsCashed()) {
+      this.dataToDisplay.data = this.storageService.getCachedProducts();
+    } else {
+      this.getProductList();
+    }
     this.searchFilterForm = this.getFilterForm();
     this.updateSearchValues();
   }
@@ -55,15 +59,20 @@ export class StorageListComponent implements OnInit, AfterViewInit {
     this.dataToDisplay.sort = this.matSort
   }
 
+  isProductsCashed(): boolean {
+    return this.storageService.isProductsCached();
+  }
+
   getInitDate(): Date {
     return new Date();
   }
 
   getProductDetails(productId: number) {
-    this.router.navigate(['/products/',productId, 'view'])
+    this.router.navigate(['products',productId, 'view'])
   }
 
   searchButton() {
+    this.storageService.resetCachedProducts();
     this.getProductList();
   }
 
@@ -97,6 +106,7 @@ export class StorageListComponent implements OnInit, AfterViewInit {
     // get products from backend and map correct status value to each product
     this.storageService.getProductsFiltered(this.searchValues).subscribe(products => {
       this.dataToDisplay.data = products;
+      this.storageService.setCachedProducts(products);
       products.forEach(product => {
         this.statusList?.forEach(status => {
           if (product.status == status.code) {

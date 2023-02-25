@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { PageMode } from 'src/app/shared/enums/storage-mode.enum';
 
 @Component({
   selector: 'app-supplier-edit',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./supplier-edit.component.css']
 })
 export class SupplierEditComponent {
-
+    supplierMode: PageMode = PageMode.EDIT;
 }

@@ -10,4 +10,6 @@ import java.util.List;
 public interface StorageRepository extends JpaRepository<Product, Long> {
 
     List<Product> findAllByOrderByIdAsc();
+
+    Long countBySupplier(Long supplier);
 }

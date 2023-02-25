@@ -56,4 +56,8 @@ public class StorageService {
     public List<StatusData> getStatus() {
         return StatusData.convertToStatusData(List.of(StatusEnum.values()));
     }
+
+    public Long countBySupplier(Long supplierId) {
+        return storageRepository.countBySupplier(supplierId);
+    }
 }

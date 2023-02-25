@@ -5,7 +5,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import my.project.storage.model.entity.Supplier;
 import my.project.storage.repository.SupplierRepository;
-import my.project.storage.repository.SupplierRepositoryExt;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,11 +14,9 @@ import java.util.Optional;
 @Slf4j
 public class SupplierService {
     final private SupplierRepository supplierRepository;
-    final private SupplierRepositoryExt supplierRepositoryExt;
 
-    SupplierService(SupplierRepository supplierRepository, SupplierRepositoryExt supplierRepositoryExt) {
+    SupplierService(SupplierRepository supplierRepository) {
         this.supplierRepository = supplierRepository;
-        this.supplierRepositoryExt = supplierRepositoryExt;
     }
 
     public List<Supplier> getSuppliers() {
@@ -49,10 +46,6 @@ public class SupplierService {
 //            TODO maybe different code?
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
-    }
-
-    public Long getProductCountForSupplier(Long supplierId) {
-        return supplierRepositoryExt.ProductCountForSupplier(supplierId);
     }
 
 }

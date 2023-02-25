@@ -28,8 +28,7 @@ public class StorageController {
 
     @GetMapping("")
     public List<Product> getProduct() {
-        List<Product> productsFiltered = storageService.getAllProducts();
-        return productsFiltered;
+        return storageService.getAllProducts();
     }
 
     @GetMapping("/{id}")
@@ -53,6 +52,11 @@ public class StorageController {
     @GetMapping("/status")
     public List<StatusData> getStatus() {
         return storageService.getStatus();
+    }
+
+    @GetMapping("/product-count/{id}")
+    public Long countBySupplier(@PathVariable(name = "id") Long supplierId) {
+        return storageService.countBySupplier(supplierId);
     }
 
 }
