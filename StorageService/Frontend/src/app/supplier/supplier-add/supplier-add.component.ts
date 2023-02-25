@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { PageMode } from 'src/app/shared/enums/storage-mode.enum';
 
 @Component({
   selector: 'app-supplier-add',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./supplier-add.component.css']
 })
 export class SupplierAddComponent {
-
+    supplierMode: PageMode = PageMode.ADD;
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Product } from './model/product-model';
+import { IProduct, Product } from './model/product-model';
 import { Observable } from 'rxjs';
 import { FilterParams } from './model/filterParams-model';
 import { IStatus } from './model/status-model';
@@ -9,6 +9,8 @@ import { IStatus } from './model/status-model';
   providedIn: 'root'
 })
 export class StorageService {
+
+  private cachedProducts: IProduct[] = [];
 
   constructor(private http: HttpClient) { }
 
@@ -30,6 +32,22 @@ export class StorageService {
 
   getStatus(): Observable<IStatus[]> {
     return this.http.get<IStatus[]>("/app/storage" + "/status");
+  }
+
+  isProductsCached(): boolean {
+    return this.cachedProducts.length > 0
+  }
+
+  resetCachedProducts() {
+    this.cachedProducts = [];
+  }
+
+  getCachedProducts(): IProduct[] {
+    return this.cachedProducts;
+  }
+
+  setCachedProducts(products: IProduct[]) {
+    this.cachedProducts = products;
   }
 
 }

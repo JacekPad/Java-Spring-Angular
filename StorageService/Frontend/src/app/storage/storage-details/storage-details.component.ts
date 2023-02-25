@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { StorageMode } from '../enums/storage-mode.enum';
+import { PageMode } from 'src/app/shared/enums/storage-mode.enum';
 import { Product } from '../model/product-model';
 import { IStatus } from '../model/status-model';
 import { StorageService } from '../storage.service';
@@ -14,7 +14,7 @@ import { StorageService } from '../storage.service';
 export class StorageDetailsComponent implements OnInit {
 
   constructor(private storageService: StorageService, private activatedRoute: ActivatedRoute, private fb: FormBuilder) { };
-  @Input() storageMode!: StorageMode;
+  @Input() storageMode!: PageMode;
   product?: Product
   selectedId: number = -1;
   productForm?: FormGroup;
@@ -23,17 +23,19 @@ export class StorageDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.getStatusList();
     this.productForm = this.getProductForm();
-    this.activatedRoute.paramMap.subscribe(param => {
-      this.selectedId = Number(param.get('id'));
-    })
-    if (this.storageMode == StorageMode.VIEW) {
+    if (this.storageMode != PageMode.ADD) {
+      this.activatedRoute.paramMap.subscribe(param => {
+        this.selectedId = Number(param.get('id'));
+      })
+    }
+    if (this.storageMode == PageMode.VIEW) {
       this.storageService.getProduct(this.selectedId).subscribe(product => {
         this.product = product;
         this.fillFormValues();
         this.getProductData();
       })
     }
-    if (this.storageMode == StorageMode.ADD) {
+    if (this.storageMode == PageMode.ADD) {
       this.product = new Product();
       this.getProductData();
     }
@@ -50,7 +52,7 @@ export class StorageDetailsComponent implements OnInit {
   }
 
   isDisabled(): boolean {
-    return this.storageMode == StorageMode.VIEW;
+    return this.storageMode == PageMode.VIEW;
   }
 
   fillFormValues(): void {
@@ -64,11 +66,12 @@ export class StorageDetailsComponent implements OnInit {
   }
 
   editProduct() {
-    this.storageMode = StorageMode.EDIT;
+    this.storageMode = PageMode.EDIT;
     this.productForm?.enable();
   }
 
   saveProduct() {
+    this.storageService.resetCachedProducts();
     if (this.product) {
       this.storageService.saveProduct(this.product);
     }
@@ -91,14 +94,14 @@ export class StorageDetailsComponent implements OnInit {
   }
 
   isEditMode(): boolean {
-    return this.storageMode == StorageMode.EDIT;
+    return this.storageMode == PageMode.EDIT;
   }
 
   isViewMode(): boolean {
-    return this.storageMode == StorageMode.VIEW;
+    return this.storageMode == PageMode.VIEW;
   }
   isAddMode(): boolean {
-    return this.storageMode == StorageMode.ADD;
+    return this.storageMode == PageMode.ADD;
   }
 
   getStatusList() {

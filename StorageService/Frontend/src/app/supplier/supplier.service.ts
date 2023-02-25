@@ -7,19 +7,37 @@ import { ISupplier } from './model/supplier-model';
   providedIn: 'root'
 })
 export class SupplierService {
-
+  private cachedSuppliers: ISupplier[] = [];
   constructor(private http: HttpClient) { }
 
+// TODO change supplier to suppliers
   getSuppliers(): Observable<ISupplier[]> {
     return this.http.get<ISupplier[]>("/app/supplier");
   }
 
-  getNumberOfProducts(supplierId: number) {
-    return this.http.get<ISupplier>("/app/supplier" + "/product-count/" + supplierId);
+  getNumberOfProducts(supplierId: number): Observable<number> {
+    return this.http.get<number>("/app/storage/product-count/" + supplierId);
   }
 
   getSupplier(supplierId: string): Observable<ISupplier> {
     return this.http.get<ISupplier>("/app/supplier" + "/" + supplierId);
   }
+
+  resetCachedSuppliers() {
+    this.cachedSuppliers = [];
+  }
+
+  getCachedSuppliers(): ISupplier[] {
+    return this.cachedSuppliers;
+  }
+
+  setCachedSuppliers(suppliers: ISupplier[]) {
+    this.cachedSuppliers = suppliers;
+  }
+
+  isSuppliersCached(): boolean {
+    return this.cachedSuppliers.length > 0;
+  }
+
 
 }

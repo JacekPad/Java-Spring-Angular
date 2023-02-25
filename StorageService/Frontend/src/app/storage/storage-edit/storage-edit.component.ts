@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { StorageMode } from '../enums/storage-mode.enum';
+import { PageMode } from 'src/app/shared/enums/storage-mode.enum';
 
 @Component({
   selector: 'app-storage-edit',
@@ -8,5 +8,5 @@ import { StorageMode } from '../enums/storage-mode.enum';
 })
 export class StorageEditComponent {
   
-  storageMode: StorageMode = StorageMode.EDIT;
+  storageMode: PageMode = PageMode.EDIT;
 }
