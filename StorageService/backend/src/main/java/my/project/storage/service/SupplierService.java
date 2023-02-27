@@ -25,7 +25,7 @@ public class SupplierService {
 
     public Supplier getSupplier(Long id, HttpServletResponse response, HttpServletRequest request) {
         Optional<Supplier> supplier = supplierRepository.findById(id);
-        if (!supplier.isPresent()) {
+        if (supplier.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return null;
         } else {
@@ -44,7 +44,7 @@ public class SupplierService {
             supplierRepository.delete(supplierToDelete.get());
         } else {
 //            TODO maybe different code?
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 
