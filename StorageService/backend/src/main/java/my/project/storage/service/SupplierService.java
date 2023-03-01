@@ -2,6 +2,7 @@ package my.project.storage.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import my.project.storage.model.data.ResultStatus;
 import my.project.storage.model.entity.Supplier;
@@ -38,6 +39,7 @@ public class SupplierService {
 
     }
 
+    @Transactional
     public ResultStatus saveSupplier(Supplier supplier) {
         log.info("Adding product: {}", supplier);
         ResultStatus result = new ResultStatus();

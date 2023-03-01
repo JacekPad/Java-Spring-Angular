@@ -2,6 +2,7 @@ package my.project.storage.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import my.project.storage.model.data.FilterParams;
 import my.project.storage.model.data.ResultStatus;
@@ -38,11 +39,12 @@ public class StorageService {
         return storageRepository.findAll();
     }
 
+    @Transactional
     public ResultStatus addProduct(Product product) {
         log.info("Adding product: {}", product);
         //        move it somwhere else (custom repo?)
         ResultStatus result = new ResultStatus();
-        validateproduct(result,product);
+        validateProduct(result,product);
         try {
             storageRepository.save(product);
             result.setSuccess(true);
@@ -77,7 +79,7 @@ public class StorageService {
         return storageRepository.countBySupplier(supplierId);
     }
 
-    private void validateproduct(ResultStatus result, Product product) {
+    private void validateProduct(ResultStatus result, Product product) {
         if (product.getName() == null) {
             result.getErrors().put("name", "Product's name cannot be empty");
         }
