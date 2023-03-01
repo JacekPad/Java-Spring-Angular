@@ -2,15 +2,19 @@ package my.project.storage.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import my.project.storage.model.data.ResultStatus;
 import my.project.storage.model.entity.Supplier;
 import my.project.storage.service.SupplierService;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @Slf4j
+@Validated
 @RequestMapping("/supplier")
 public class SupplierController {
 //TODO checks validations security etc.
@@ -31,8 +35,12 @@ public class SupplierController {
     }
 
     @PostMapping("/add")
-    public void addSupplier(@RequestBody Supplier supplier) {
-        supplierService.saveSupplier(supplier);
+    public ResultStatus addSupplier(@RequestBody @Valid Supplier supplier, HttpServletResponse response, HttpServletRequest request) {
+        ResultStatus result = supplierService.saveSupplier(supplier);
+        if (result != null && !result.getErrors().isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+        return result;
     }
 
     @GetMapping("/delete/{id}")

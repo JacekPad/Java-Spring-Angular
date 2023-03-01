@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import my.project.storage.model.data.FilterParams;
+import my.project.storage.model.data.ResultStatus;
 import my.project.storage.model.data.StatusData;
 import my.project.storage.model.entity.Product;
 import my.project.storage.model.enums.StatusEnum;
@@ -11,6 +12,7 @@ import my.project.storage.repository.StorageRepository;
 import my.project.storage.repository.StorageRepositoryExt;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,20 +25,34 @@ public class StorageService {
     private StorageRepositoryExt storageRepositoryExt;
 
 
-    StorageService (StorageRepository storageRepository, StorageRepositoryExt storageRepositoryExt) {
+    StorageService(StorageRepository storageRepository, StorageRepositoryExt storageRepositoryExt) {
         this.storageRepository = storageRepository;
         this.storageRepositoryExt = storageRepositoryExt;
     }
+
     public List<Product> getProductsFiltered(FilterParams params) {
         return storageRepositoryExt.findByFilters(params);
     }
+
     public List<Product> getAllProducts() {
         return storageRepository.findAll();
     }
 
-    public void addProduct(Product product) {
+    public ResultStatus addProduct(Product product) {
         log.info("Adding product: {}", product);
-        storageRepository.save(product);
+        //        move it somwhere else (custom repo?)
+        ResultStatus result = new ResultStatus();
+        validateproduct(result,product);
+        try {
+            storageRepository.save(product);
+            result.setSuccess(true);
+            result.setResult(product);
+            return result;
+        } catch (Exception e) {
+            log.error("Saving product failed: " + e.getMessage());
+            result.getErrors().put("failed", "Product was not saved. Error: " + e.getMessage());
+            return result;
+        }
     }
 
     public Product getProduct(Long id, HttpServletResponse response, HttpServletRequest request) {
@@ -44,9 +60,9 @@ public class StorageService {
         if (!product.isPresent()) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return null;
-        } else {
-            return product.get();
         }
+        return product.get();
+
     }
 
     public void removeProduct(Long id) {
@@ -59,5 +75,26 @@ public class StorageService {
 
     public Long countBySupplier(Long supplierId) {
         return storageRepository.countBySupplier(supplierId);
+    }
+
+    private void validateproduct(ResultStatus result, Product product) {
+        if (product.getName() == null) {
+            result.getErrors().put("name", "Product's name cannot be empty");
+        }
+        if (product.getType() == null) {
+            result.getErrors().put("type", "Product's type cannot be empty");
+        }
+        if (product.getStatus() == null) {
+            result.getErrors().put("status", "Product's status cannot be empty");
+        }
+        if (product.getSupplier() == null) {
+            result.getErrors().put("supplier", "Product's supplier cannot be empty");
+        }
+        if (product.getQuantity() == null) {
+            result.getErrors().put("quantityEmpty", "Product's quantity cannot be empty");
+        }
+        if (product.getQuantity() < 0) {
+            result.getErrors().put("quantityMin", "Product's quantity cannot be less than 0");
+        }
     }
 }
