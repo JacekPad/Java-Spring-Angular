@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import my.project.storage.utils.validators.StringValid;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,15 +23,18 @@ public class Product {
     private Long id;
 
     @Column(name = "NAME")
+    @StringValid
     private String name;
 
     @Column(name = "TYPE")
+    @StringValid
     private String type;
 
     @Column(name = "QUANTITY")
     private Long quantity;
 
     @Column(name = "STATUS")
+    @StringValid
     private String status;
 
     @Column(name = "SUPPLIER")

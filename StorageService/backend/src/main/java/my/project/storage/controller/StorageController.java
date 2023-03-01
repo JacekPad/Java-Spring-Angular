@@ -2,16 +2,20 @@ package my.project.storage.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import my.project.storage.model.data.FilterParams;
+import my.project.storage.model.data.ResultStatus;
 import my.project.storage.model.data.StatusData;
 import my.project.storage.model.entity.Product;
 import my.project.storage.service.StorageService;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/storage")
+@Validated
 public class StorageController {
 
     private final StorageService storageService;
@@ -38,9 +42,13 @@ public class StorageController {
     }
 
     @PostMapping("/add")
-    public void addProduct(@RequestBody Product product) {
+    public ResultStatus addProduct(@RequestBody @Valid Product product, HttpServletRequest request, HttpServletResponse response) {
         //        TODO securityCheck etc
-        storageService.addProduct(product);
+        ResultStatus result =storageService.addProduct(product);
+        if (result != null && !result.getErrors().isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+        return result;
     }
 
     @GetMapping("/remove/{id}")
