@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { PageMode } from 'src/app/shared/enums/storage-mode.enum';
+import { TitlePageService } from 'src/app/title-page.service';
 import { Product } from '../model/product-model';
 import { IStatus } from '../model/status-model';
 import { StorageService } from '../storage.service';
@@ -13,7 +14,9 @@ import { StorageService } from '../storage.service';
 })
 export class StorageDetailsComponent implements OnInit {
 
-  constructor(private storageService: StorageService, private activatedRoute: ActivatedRoute, private fb: FormBuilder) { };
+  constructor(private storageService: StorageService, private activatedRoute: ActivatedRoute, private fb: FormBuilder,
+    private titleService: TitlePageService) { };
+  title: string = ""
   @Input() storageMode!: PageMode;
   product?: Product
   selectedId: number = -1;
@@ -21,6 +24,8 @@ export class StorageDetailsComponent implements OnInit {
   statusList!: IStatus[];
 
   ngOnInit(): void {
+    this.getTitle();
+    this.titleService.setTitle(this.title);
     this.getStatusList();
     this.productForm = this.getProductForm();
     if (this.storageMode != PageMode.ADD) {
@@ -41,6 +46,13 @@ export class StorageDetailsComponent implements OnInit {
     }
   }
 
+  getTitle() {
+    if (this.storageMode == PageMode.ADD) {
+      this.title = "Add product"
+    } else {
+      this.title = "Product details";
+    }
+  }
   getProductForm(): FormGroup {
     return this.fb.group({
       name: new FormControl({ value: '', disabled: this.isDisabled() }),

@@ -1,5 +1,4 @@
-<div>
-    <p>Search filters:</p>
+    <h4>Search filters</h4>
     <form [formGroup]="searchFilterForm">
         <div class="filters">
 
@@ -49,9 +48,11 @@
 
         </div>
         <!-- TODO - fix button placement -->
-        <button mat-raised-button (click)="searchButton()">Search</button>
+        <button mat-raised-button color="primary" (click)="searchButton()">Search</button>
+        <button class="reset-button" mat-raised-button color="primary" (click)="resetFilters()">Reset filters</button>
     </form>
 
+    <h4>Product list</h4>
     <div class="main-table">
         <table mat-table matSort [dataSource]="dataToDisplay">
 

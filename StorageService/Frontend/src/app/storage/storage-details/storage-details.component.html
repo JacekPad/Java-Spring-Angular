@@ -27,5 +27,5 @@
         </mat-form-field>
 </form>
 
-<button *ngIf="isViewMode()" (click)="editProduct()" mat-raised-button>Edit</button>
-<button *ngIf="!isViewMode()" (click)="saveProduct()" mat-raised-button>Save</button>
+<button *ngIf="isViewMode()" color="primary" (click)="editProduct()" mat-raised-button>Edit</button>
+<button *ngIf="!isViewMode()" color="primary" (click)="saveProduct()" mat-raised-button>Save</button>
