@@ -1,3 +1,4 @@
+<h4>Search filters</h4>
 <div class="filters">
 
     <mat-form-field class="filter-input" appearance="fill">
@@ -43,8 +44,11 @@
         <mat-label>Quantity max</mat-label>
         <input type="number" min="-1" [defaultValue]="-1" matInput>
     </mat-form-field>
-
 </div>
+<button mat-raised-button color="primary">Search</button>
+<button class="reset-button" mat-raised-button color="primary">Reset filters</button>
+
+<h4>Product list</h4>
 <div class="main-table">
     <table mat-table matSort [dataSource]="dataToDisplay">
 

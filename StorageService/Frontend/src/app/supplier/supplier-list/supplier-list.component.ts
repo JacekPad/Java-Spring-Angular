@@ -6,6 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
+import { TitlePageService } from 'src/app/title-page.service';
 
 @Component({
   selector: 'app-supplier-list',
@@ -14,15 +15,16 @@ import { Router } from '@angular/router';
 })
 export class SupplierListComponent implements OnInit, AfterViewInit{
 
-  constructor(private supplierService: SupplierService, private router: Router) { }
+  constructor(private supplierService: SupplierService, private router: Router, private titleService: TitlePageService) { }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) matSort!: MatSort;
   dataToDisplay = new MatTableDataSource();
   displayedColumns = ['name','numberOfProducts'];
-  
+  title: string = "Supplier list"
 
   ngOnInit(): void {
+    this.titleService.setTitle(this.title);
     if (this.isSuppliersCached()) {
       this.dataToDisplay.data = this.supplierService.getCachedSuppliers();
     } else {

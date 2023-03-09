@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { SupplierService } from 'src/app/supplier/supplier.service';
 import { ISupplier } from 'src/app/supplier/model/supplier-model';
+import { TitlePageService } from 'src/app/title-page.service';
 
 @Component({
   selector: 'app-storage-list',
@@ -21,7 +22,7 @@ export class StorageListComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) matSort!: MatSort;
-
+  title: string = "Product list";
   dataToDisplay = new MatTableDataSource();
   displayedColumns = ['name', 'type', 'quantity', 'status', 'supplier', 'created', 'modified'];
   searchFilterForm!: FormGroup;
@@ -37,9 +38,11 @@ export class StorageListComponent implements OnInit, AfterViewInit {
     created: this.getInitDate()
   }
 
-  constructor(private storageService: StorageService, private fb: FormBuilder, private router: Router, private datePipe: DatePipe, private supplierService: SupplierService) { }
+  constructor(private storageService: StorageService, private fb: FormBuilder, private router: Router, private datePipe: DatePipe,
+     private supplierService: SupplierService, private titleService: TitlePageService) { }
 
   ngOnInit(): void {
+    this.titleService.setTitle(this.title);
     this.getSuppliers().subscribe(suppliers => {
       this.supplierList = suppliers;
     });
@@ -131,5 +134,22 @@ export class StorageListComponent implements OnInit, AfterViewInit {
   getSuppliers(): Observable<ISupplier[]> {
     return this.supplierService.getSuppliers();
   }
+
+  resetFilters() {
+    this.clearSearchValues();
+  }
+
+  clearSearchValues() {
+    this.searchFilterForm.patchValue({
+      name: "",
+      type: "",
+      supplier: "",
+      status: "",
+      quantityMin: 0,
+      quantityMax: -1,
+    });
+  }
+
+
 }
 
