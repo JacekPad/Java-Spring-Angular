@@ -45,9 +45,13 @@ public class SupplierService {
         ResultStatus result = new ResultStatus();
         validateSupplier(result,supplier);
         try {
-            supplierRepository.save(supplier);
-            result.setSuccess(true);
-            result.setResult(supplier);
+            if (result.getErrors().isEmpty()) {
+                supplierRepository.save(supplier);
+                result.setSuccess(true);
+                result.setResult(supplier);
+            } else {
+                log.debug("Suppliers save error: {}", result.getErrors());
+            }
             return result;
         } catch (Exception e) {
             log.error("Saving supplier failed: " + e.getMessage());
@@ -60,6 +64,7 @@ public class SupplierService {
     public void deleteSupplier(Long supplierId, HttpServletResponse response, HttpServletRequest request) {
         Optional<Supplier> supplierToDelete = supplierRepository.findById(supplierId);
         if (supplierToDelete.isPresent()) {
+//            TODO delete products tied to supplier
             supplierRepository.delete(supplierToDelete.get());
         } else {
 //            TODO maybe different code?
@@ -82,6 +87,9 @@ public class SupplierService {
         }
         if (supplier.getZipCode() == null) {
             result.getErrors().put("zipCode","Supplier's zip-code cannot be empty");
+        }
+        if (supplier.getSupplierCode() == null) {
+            result.getErrors().put("supplierCode","Supplier code cannot be empty");
         }
     }
 

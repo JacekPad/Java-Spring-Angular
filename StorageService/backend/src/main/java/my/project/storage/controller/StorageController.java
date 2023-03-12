@@ -44,7 +44,7 @@ public class StorageController {
     @PostMapping("/add")
     public ResultStatus addProduct(@RequestBody @Valid Product product, HttpServletRequest request, HttpServletResponse response) {
         //        TODO securityCheck etc
-        ResultStatus result =storageService.addProduct(product);
+        ResultStatus result = storageService.addProduct(product);
         if (result != null && !result.getErrors().isEmpty()) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
@@ -65,6 +65,11 @@ public class StorageController {
     @GetMapping("/product-count/{id}")
     public Long countBySupplier(@PathVariable(name = "id") Long supplierId) {
         return storageService.countBySupplier(supplierId);
+    }
+
+    @GetMapping("/supplier-products/{id}")
+    public List<Product> getProductsForSupplier(@PathVariable(name = "id") Long supplierId, HttpServletResponse response, HttpServletRequest request) {
+        return storageService.getProductsForSupplier(supplierId, response, request);
     }
 
 }

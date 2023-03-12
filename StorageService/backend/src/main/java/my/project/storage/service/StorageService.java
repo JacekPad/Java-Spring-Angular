@@ -46,9 +46,13 @@ public class StorageService {
         ResultStatus result = new ResultStatus();
         validateProduct(result,product);
         try {
-            storageRepository.save(product);
-            result.setSuccess(true);
-            result.setResult(product);
+            if (result.getErrors().isEmpty()) {
+                storageRepository.save(product);
+                result.setSuccess(true);
+                result.setResult(product);
+            }  else {
+                log.debug("product save errors: {}", result.getErrors());
+            }
             return result;
         } catch (Exception e) {
             log.error("Saving product failed: " + e.getMessage());
@@ -65,6 +69,15 @@ public class StorageService {
         }
         return product.get();
 
+    }
+
+    public List<Product> getProductsForSupplier(Long supplierId, HttpServletResponse response, HttpServletRequest request) {
+        List<Product> products = storageRepository.findAllBySupplier(supplierId);
+        if (products.isEmpty()) {
+         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+         return null;
+        }
+        return products;
     }
 
     public void removeProduct(Long id) {

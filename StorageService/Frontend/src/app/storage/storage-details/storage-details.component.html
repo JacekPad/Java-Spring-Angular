@@ -1,17 +1,19 @@
 <form *ngIf="productForm" [formGroup]="productForm">
         <mat-form-field class="filter-input" appearance="fill">
             <mat-label>Name</mat-label>
-            <input matInput formControlName="name">
+            <input matInput formControlName="name" id="name" #name>
+            <mat-hint class="filter-error" *ngIf="errorHanlder('name','required')">Name can not be empty</mat-hint>
         </mat-form-field>
-
         <mat-form-field class="filter-input" appearance="fill">
             <mat-label>Type</mat-label>
             <input matInput formControlName="type">
+            <mat-hint class="filter-error" *ngIf="errorHanlder('type','required')">Type can not be empty</mat-hint>
         </mat-form-field>
 
         <mat-form-field class="filter-input" appearance="fill">
             <mat-label>Quantity</mat-label>
             <input type="number" min="0" matInput formControlName="quantity">
+            <mat-hint class="filter-error" *ngIf="errorHanlder('quantity','required')">Quantity has to be at least 1</mat-hint>
         </mat-form-field>
 
     <mat-form-field class="filter-input" appearance="fill">
@@ -19,13 +21,18 @@
         <mat-select formControlName="status">
             <mat-option *ngFor="let status of statusList" value="{{status.code}}">{{status.value}}</mat-option>
         </mat-select>
+        <mat-hint class="filter-error" *ngIf="errorHanlder('status','required')">Status can not be empty</mat-hint>
     </mat-form-field>
 
-        <mat-form-field class="filter-input" appearance="fill">
-            <mat-label>Supplier</mat-label>
-            <input matInput formControlName="supplier">
-        </mat-form-field>
+
+    <mat-form-field class="filter-input" appearance="fill">
+        <mat-label>Supplier</mat-label>
+        <mat-select formControlName="supplier">
+            <mat-option *ngFor="let supplier of suppliers" value="{{supplier.id}}">{{supplier.name}}</mat-option>
+        </mat-select>
+        <mat-hint class="filter-error" *ngIf="errorHanlder('supplier','required')">Supplier can not be empty</mat-hint>
+    </mat-form-field>
 </form>
 
-<button *ngIf="isViewMode()" color="primary" (click)="editProduct()" mat-raised-button>Edit</button>
-<button *ngIf="!isViewMode()" color="primary" (click)="saveProduct()" mat-raised-button>Save</button>
+<button class="detailButton" *ngIf="isViewMode()" color="primary" (click)="editProduct()" mat-raised-button>Edit</button>
+<button class="detailButton" *ngIf="!isViewMode()" color="primary" (click)="saveProduct()" mat-raised-button>Save</button>

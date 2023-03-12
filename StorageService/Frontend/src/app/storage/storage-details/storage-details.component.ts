@@ -1,7 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { PageMode } from 'src/app/shared/enums/storage-mode.enum';
+import { ISupplier } from 'src/app/supplier/model/supplier-model';
+import { SupplierService } from 'src/app/supplier/supplier.service';
 import { TitlePageService } from 'src/app/title-page.service';
 import { Product } from '../model/product-model';
 import { IStatus } from '../model/status-model';
@@ -15,7 +17,7 @@ import { StorageService } from '../storage.service';
 export class StorageDetailsComponent implements OnInit {
 
   constructor(private storageService: StorageService, private activatedRoute: ActivatedRoute, private fb: FormBuilder,
-    private titleService: TitlePageService) { };
+    private titleService: TitlePageService, private supplierService: SupplierService) { };
 
   
   title: string = ""
@@ -24,11 +26,13 @@ export class StorageDetailsComponent implements OnInit {
   selectedId: number = -1;
   productForm?: FormGroup;
   statusList!: IStatus[];
+  suppliers?: ISupplier[];
 
   ngOnInit(): void {
     this.getTitle();
     this.titleService.setTitle(this.title);
     this.getStatusList();
+    this.getSuppliers();
     this.productForm = this.getProductForm();
     if (this.storageMode != PageMode.ADD) {
       this.activatedRoute.paramMap.subscribe(param => {
@@ -55,13 +59,14 @@ export class StorageDetailsComponent implements OnInit {
       this.title = "Product details";
     }
   }
+
   getProductForm(): FormGroup {
     return this.fb.group({
-      name: new FormControl({ value: '', disabled: this.isDisabled() }),
-      type: new FormControl({ value: '', disabled: this.isDisabled() }),
-      quantity: new FormControl({ value: '', disabled: this.isDisabled() }),
-      status: new FormControl({ value: '', disabled: this.isDisabled() }),
-      supplier: new FormControl({ value: '', disabled: this.isDisabled() }),
+      name: new FormControl({ value: null, disabled: this.isDisabled()}, Validators.required),
+      type: new FormControl({ value: '', disabled: this.isDisabled() }, Validators.required),
+      quantity: new FormControl({ value: '', disabled: this.isDisabled()}, this.quantityValidator()),
+      status: new FormControl({ value: '', disabled: this.isDisabled() }, Validators.required),
+      supplier: new FormControl({ value: '', disabled: this.isDisabled()}, Validators.required),
     });
   }
 
@@ -85,9 +90,25 @@ export class StorageDetailsComponent implements OnInit {
   }
 
   saveProduct() {
-    this.storageService.resetCachedProducts();
-    if (this.product) {
+    console.log(this.productForm);
+    this.productForm?.markAllAsTouched();
+    if (this.product && this.productForm?.status == 'VALID') {
       this.storageService.saveProduct(this.product);
+    }
+    this.storageService.resetCachedProducts();
+  }
+
+  errorHanlder(formControlName: string, errorId: string): boolean | undefined {
+    return this.productForm?.controls[formControlName].touched && this.productForm?.controls[formControlName].hasError(errorId);
+  }
+
+  quantityValidator(): Validators {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;      
+      if ((!value || value == "" || value <= 0)) {
+        return {required: true};
+      }
+      return null;
     }
   }
 
@@ -101,10 +122,6 @@ export class StorageDetailsComponent implements OnInit {
         this.product.supplier = form.supplier;
       }
     });
-  }
-
-  formValid(): boolean {
-    return true;
   }
 
   isEditMode(): boolean {
@@ -122,6 +139,16 @@ export class StorageDetailsComponent implements OnInit {
     this.storageService.getStatus().subscribe(resp => {
       this.statusList = resp;
     });
+  }
+
+  getSuppliers() {
+    if (this.supplierService.isSuppliersCached()) {
+      this.suppliers = this.supplierService.getCachedSuppliers();
+    } else {
+      this.supplierService.getSuppliers().subscribe(suppliers => {
+        this.suppliers = suppliers;
+      });
+    }
   }
 
 }

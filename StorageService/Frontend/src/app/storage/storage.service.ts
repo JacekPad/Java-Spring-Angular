@@ -34,10 +34,18 @@ export class StorageService {
     return this.http.get<IStatus[]>("/app/storage" + "/status");
   }
 
+  getProductsForSupplier(supplierId: number): Observable<IProduct[]> {
+    return this.http.get<IProduct[]>("/app/storage/supplier-products/" + supplierId);
+  }
+
+  getNumberOfProductsForSupplier(supplierId: number): Observable<number> {
+    return this.http.get<number>("/app/storage/product-count/" + supplierId);
+  }
+
   isProductsCached(): boolean {
     return this.cachedProducts.length > 0
   }
-
+  
   resetCachedProducts() {
     this.cachedProducts = [];
   }
@@ -49,5 +57,6 @@ export class StorageService {
   setCachedProducts(products: IProduct[]) {
     this.cachedProducts = products;
   }
+
 
 }

@@ -10,13 +10,8 @@ export class SupplierService {
   private cachedSuppliers: ISupplier[] = [];
   constructor(private http: HttpClient) { }
 
-// TODO change supplier to suppliers
   getSuppliers(): Observable<ISupplier[]> {
     return this.http.get<ISupplier[]>("/app/supplier");
-  }
-
-  getNumberOfProducts(supplierId: number): Observable<number> {
-    return this.http.get<number>("/app/storage/product-count/" + supplierId);
   }
 
   getSupplier(supplierId: string): Observable<ISupplier> {
@@ -38,6 +33,5 @@ export class SupplierService {
   isSuppliersCached(): boolean {
     return this.cachedSuppliers.length > 0;
   }
-
 
 }

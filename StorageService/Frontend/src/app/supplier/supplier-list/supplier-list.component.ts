@@ -7,20 +7,21 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { TitlePageService } from 'src/app/title-page.service';
+import { StorageService } from 'src/app/storage/storage.service';
 
 @Component({
   selector: 'app-supplier-list',
   templateUrl: './supplier-list.component.html',
   styleUrls: ['./supplier-list.component.css']
 })
-export class SupplierListComponent implements OnInit, AfterViewInit{
+export class SupplierListComponent implements OnInit, AfterViewInit {
 
-  constructor(private supplierService: SupplierService, private router: Router, private titleService: TitlePageService) { }
+  constructor(private supplierService: SupplierService, private router: Router, private titleService: TitlePageService, private storageService: StorageService) { }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) matSort!: MatSort;
   dataToDisplay = new MatTableDataSource();
-  displayedColumns = ['name','numberOfProducts'];
+  displayedColumns = ['name', 'supplierCode', 'numberOfProducts', 'created', 'modified'];
   title: string = "Supplier list"
 
   ngOnInit(): void {
@@ -32,16 +33,16 @@ export class SupplierListComponent implements OnInit, AfterViewInit{
     }
   }
 
-  
+
   ngAfterViewInit(): void {
     this.dataToDisplay.paginator = this.paginator;
     this.dataToDisplay.sort = this.matSort
-    }
+  }
 
   getSuppliers() {
     this.supplierService.getSuppliers().subscribe(suppliers => {
       suppliers.forEach(supplier => {
-        this.supplierService.getNumberOfProducts(supplier.id).subscribe(count => {
+        this.storageService.getNumberOfProductsForSupplier(supplier.id).subscribe(count => {
           supplier.numberOfProducts = count
         });
       })
@@ -53,10 +54,6 @@ export class SupplierListComponent implements OnInit, AfterViewInit{
   getSupplierDetails(rowId: number) {
     this.router.navigate(['supplier', rowId, 'view'])
     console.log(rowId);
-  }
-
-  getNumberOfProducts(supplierId: number) {
-    this.supplierService.getNumberOfProducts(supplierId);
   }
 
   isSuppliersCached(): boolean {

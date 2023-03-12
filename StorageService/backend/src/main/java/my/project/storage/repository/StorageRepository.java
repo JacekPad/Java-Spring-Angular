@@ -12,4 +12,6 @@ public interface StorageRepository extends JpaRepository<Product, Long> {
     List<Product> findAllByOrderByIdAsc();
 
     Long countBySupplier(Long supplier);
+
+    List<Product> findAllBySupplier(Long supplierId);
 }
