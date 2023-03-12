@@ -16,6 +16,8 @@ export class StorageDetailsComponent implements OnInit {
 
   constructor(private storageService: StorageService, private activatedRoute: ActivatedRoute, private fb: FormBuilder,
     private titleService: TitlePageService) { };
+
+  
   title: string = ""
   @Input() storageMode!: PageMode;
   product?: Product

@@ -4,9 +4,9 @@
     <div>asdasdsa</div>
     <mat-drawer-content>
         <div class="header">
-            <div>
-                <h3>{{title}}</h3>
-                <p class="link-chain">stuff</p>
+            <div *ngIf="titleSub">
+                <h3>{{titleSub | async}}</h3>
+                <p class="link-chain">sublinkChainsoon</p>
             </div>
         </div>
         <div class="main-content">

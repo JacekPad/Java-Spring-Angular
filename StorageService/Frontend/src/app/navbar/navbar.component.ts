@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy } from '@angular/compiler';
+import { AfterViewInit, ChangeDetectorRef, Component, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Observable } from 'rxjs';
 import { TitlePageService } from '../title-page.service';
 
 @Component({
@@ -6,16 +8,17 @@ import { TitlePageService } from '../title-page.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent {
-  public title: string = "";
+export class NavbarComponent implements OnInit {
+  public titleSub?: Observable<string>;
 
+  constructor(private titleService: TitlePageService, private cdr: ChangeDetectorRef) { }
 
+  ngOnInit(): void {
+    this.titleSub = this.titleService.titlePage;
+  };
 
-  constructor(private titleService: TitlePageService) {
-    titleService.titlePage.subscribe(title => {
-      this.title = title;
-    })
-
+  ngAfterContentChecked() {
+    this.cdr.detectChanges();
   }
 
 }
